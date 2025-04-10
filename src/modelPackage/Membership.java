@@ -7,6 +7,12 @@ public class Membership {
     private Player player;
     private LocalDate registrationDate;
 
+    public Membership(Club club, Player player, LocalDate registrationDate) {
+        this.club = club;
+        this.player = player;
+        this.registrationDate = registrationDate;
+    }
+
     public Club getClub() {
         return club;
     }

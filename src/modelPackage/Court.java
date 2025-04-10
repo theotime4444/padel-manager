@@ -6,6 +6,13 @@ public class Court {
     private boolean isOutdoor;
     private Club club;
 
+    public Court(int id, String state, boolean isOutdoor, Club club) {
+        this.id = id;
+        this.state = state;
+        this.isOutdoor = isOutdoor;
+        this.club = club;
+    }
+
     public int getId() {
         return id;
     }

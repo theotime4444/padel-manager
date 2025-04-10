@@ -10,6 +10,15 @@ public class Tournement {
     private LocalDateTime dateHeureFin;
     private Club club;
 
+    public Tournement(int id, String nom, double prix, LocalDateTime dateHeureDebut, LocalDateTime dateHeureFin, Club club) {
+        this.id = id;
+        this.nom = nom;
+        this.prix = prix;
+        this.dateHeureDebut = dateHeureDebut;
+        this.dateHeureFin = dateHeureFin;
+        this.club = club;
+    }
+
     public int getId() {
         return id;
     }
