@@ -3,30 +3,29 @@ package modelPackage;
 import java.time.LocalDate;
 
 public class Membership {
-    private Club club;
-    private Player player;
+    private Integer clubId;
+    private Integer playerId;
     private LocalDate registrationDate;
 
-    public Membership(Club club, Player player, LocalDate registrationDate) {
-        this.club = club;
-        this.player = player;
+    public Membership( LocalDate registrationDate) {
+
         this.registrationDate = registrationDate;
     }
 
-    public Club getClub() {
-        return club;
+    public Integer getClubId() {
+        return clubId;
     }
 
-    public void setClub(Club club) {
-        this.club = club;
+    public void setClubId(Integer club) {
+        this.clubId = club;
     }
 
-    public Player getPlayer() {
-        return player;
+    public Integer getPlayerId() {
+        return playerId;
     }
 
-    public void setPlayer(Player player) {
-        this.player = player;
+    public void setPlayerId(Integer player) {
+        this.playerId = player;
     }
 
     public LocalDate getRegistrationDate() {

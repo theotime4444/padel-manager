@@ -11,7 +11,7 @@ public class Club {
     private int phoneNumber;
     private LocalDate creationDate;
     private String website;
-    private boolean isBeginnersFriendly;
+    private Boolean isBeginnersFriendly;
     private String instagramProfile;
 
     public Club(int id, String name, String streetAddress, int localityID, int phoneNumber, LocalDate creationDate, String website, boolean isBeginnersFriendly, String instagramProfile) {

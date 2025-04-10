@@ -3,20 +3,18 @@ package modelPackage;
 import java.time.LocalDateTime;
 
 public class Tournement {
-    private int id;
+    private Integer id;
     private String nom;
     private double prix;
     private LocalDateTime dateHeureDebut;
     private LocalDateTime dateHeureFin;
-    private Club club;
+    private Integer clubId;
 
-    public Tournement(int id, String nom, double prix, LocalDateTime dateHeureDebut, LocalDateTime dateHeureFin, Club club) {
-        this.id = id;
+    public Tournement(String nom, double prix, LocalDateTime dateHeureDebut, LocalDateTime dateHeureFin) {
         this.nom = nom;
         this.prix = prix;
         this.dateHeureDebut = dateHeureDebut;
         this.dateHeureFin = dateHeureFin;
-        this.club = club;
     }
 
     public int getId() {
@@ -59,11 +57,11 @@ public class Tournement {
         this.dateHeureFin = dateHeureFin;
     }
 
-    public Club getClub() {
-        return club;
+    public Integer getClubId() {
+        return clubId;
     }
 
-    public void setClub(Club club) {
-        this.club = club;
+    public void setClub(Integer clubId) {
+        this.clubId = clubId;
     }
 }
