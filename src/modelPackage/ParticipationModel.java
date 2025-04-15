@@ -1,12 +1,12 @@
 package modelPackage;
 
-public class Participation {
+public class ParticipationModel {
 
     private Integer playerId;
     private Integer gameId;
     private int score;
 
-    public Participation(int score) {
+    public ParticipationModel(int score) {
         this.score = score;
     }
 

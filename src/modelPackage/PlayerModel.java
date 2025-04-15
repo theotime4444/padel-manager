@@ -3,7 +3,7 @@ package modelPackage;
 
 
     import java.util.Date;
-    public class Player {
+    public class PlayerModel {
         private Integer playerID;
         private String lastname;
         private String firstname;
@@ -17,8 +17,8 @@ package modelPackage;
         private Integer locality;
         private String instagramProfile;
 
-        public Player(String lastname, String firstname, Date birthdayDate,
-                      char gender, int eloPoints, String phoneNumber, String email, boolean isPro) {
+        public PlayerModel(String lastname, String firstname, Date birthdayDate,
+                           char gender, int eloPoints, String phoneNumber, String email, boolean isPro) {
             setLastname(lastname);
             setFirstname(firstname);
             setBirthdayDate(birthdayDate);

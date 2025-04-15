@@ -1,12 +1,12 @@
 package modelPackage;
 
-public class Locality {
+public class LocalityModel {
     private Integer localityID;
     private String country;
     private String region;
     private String city;
 
-    public Locality(String country, String region, String city) {
+    public LocalityModel(String country, String region, String city) {
         setCountry(country);
         setRegion(region);
         setCity(city);

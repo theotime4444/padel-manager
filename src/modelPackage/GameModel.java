@@ -1,7 +1,7 @@
 package modelPackage;
 import java.time.LocalDateTime;
 
-public class Game {
+public class GameModel {
 
     private Integer gameId;
     private LocalDateTime startTime;
@@ -9,7 +9,7 @@ public class Game {
     private Integer courtId;
     private Integer tournementId;
 
-    public Game(LocalDateTime startTime, LocalDateTime endTime) {
+    public GameModel(LocalDateTime startTime, LocalDateTime endTime) {
         setStartTime(startTime);
         setEndTime(endTime);
     }

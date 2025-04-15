@@ -2,7 +2,7 @@ package modelPackage;
 
 import java.time.LocalDate;
 
-public class Club {
+public class ClubModel {
 
     private Integer id;
     private Integer localityID;
@@ -14,7 +14,7 @@ public class Club {
     private Boolean isBeginnersFriendly;
     private String instagramProfile;
 
-    public Club(int id, String name, String streetAddress, int localityID, int phoneNumber, LocalDate creationDate, String website, boolean isBeginnersFriendly, String instagramProfile) {
+    public ClubModel(int id, String name, String streetAddress, int localityID, int phoneNumber, LocalDate creationDate, String website, boolean isBeginnersFriendly, String instagramProfile) {
 
     }
 

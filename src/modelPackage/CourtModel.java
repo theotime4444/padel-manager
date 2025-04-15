@@ -1,16 +1,16 @@
 package modelPackage;
 
-public class Court {
+public class CourtModel {
     private Integer id;
     private String state;
     private Boolean isOutdoor;
-    private Club club;
+    private ClubModel clubModel;
 
-    public Court(String state, Boolean isOutdoor, Club club) {
+    public CourtModel(String state, Boolean isOutdoor, ClubModel clubModel) {
 
         this.state = state;
         this.isOutdoor = isOutdoor;
-        this.club = club;
+        this.clubModel = clubModel;
     }
 
     public int getId() {
@@ -37,11 +37,11 @@ public class Court {
         isOutdoor = outdoor;
     }
 
-    public Club getClub() {
-        return club;
+    public ClubModel getClub() {
+        return clubModel;
     }
 
-    public void setClub(Club club) {
-        this.club = club;
+    public void setClub(ClubModel clubModel) {
+        this.clubModel = clubModel;
     }
 }

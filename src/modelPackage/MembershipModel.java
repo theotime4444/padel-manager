@@ -2,12 +2,12 @@ package modelPackage;
 
 import java.time.LocalDate;
 
-public class Membership {
+public class MembershipModel {
     private Integer clubId;
     private Integer playerId;
     private LocalDate registrationDate;
 
-    public Membership( LocalDate registrationDate) {
+    public MembershipModel(LocalDate registrationDate) {
 
         this.registrationDate = registrationDate;
     }

@@ -2,7 +2,7 @@ package modelPackage;
 
 import java.time.LocalDateTime;
 
-public class Tournement {
+public class TournementModel {
     private Integer id;
     private String nom;
     private double prix;
@@ -10,7 +10,7 @@ public class Tournement {
     private LocalDateTime dateHeureFin;
     private Integer clubId;
 
-    public Tournement(String nom, double prix, LocalDateTime dateHeureDebut, LocalDateTime dateHeureFin) {
+    public TournementModel(String nom, double prix, LocalDateTime dateHeureDebut, LocalDateTime dateHeureFin) {
         this.nom = nom;
         this.prix = prix;
         this.dateHeureDebut = dateHeureDebut;
