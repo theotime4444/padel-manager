@@ -1,4 +1,4 @@
 package dataAccessPackage;
 
-public interface LocalityDataAcces {
+public interface LocalityDataAccess {
 }

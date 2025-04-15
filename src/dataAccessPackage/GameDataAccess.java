@@ -1,4 +1,4 @@
 package dataAccessPackage;
 
-public interface GameDataAcces {
+public interface GameDataAccess {
 }

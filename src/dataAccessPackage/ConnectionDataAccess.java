@@ -1,4 +1,43 @@
 package dataAccessPackage;
 
+import exceptionPackage.ConnectionDataAccessException;
+
+import java.net.URL;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+
 public class ConnectionDataAccess {
+
+    private static final String URL = "jdbc:mysql://localhost:3306/mydbpaddle";
+    private static final String USER = "root";
+    private static final String PASSWORD = "paddle";
+    private static Connection connection;
+
+    public static Connection getInstance() throws ConnectionDataAccessException {
+        if (connection == null) {
+            try {
+                connection = DriverManager.getConnection(URL, USER, PASSWORD);
+            } catch (SQLException e) {
+                throw new ConnectionDataAccessException(e.getMessage());
+            }
+        }
+        return connection;
+    }
+
+    public static void closeConnection() throws ConnectionDataAccessException {
+        if (connection != null) {
+            try {
+                connection.close();
+                // si jamais on décide de fermer la connexion sans quitter le programme
+                connection = null;
+            } catch (SQLException e) {
+                throw new ConnectionDataAccessException(e.getMessage());
+            }
+        }
+    }
+
+
+
+
 }
