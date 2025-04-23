@@ -25,10 +25,12 @@ package modelPackage;
             setEloPoints(eloPoints);
             setPhoneNumber(phoneNumber);
             setEmail(email);
-            setPro(isPro);
+            setIsPro(isPro);
             setLocality(locality);
             setInstagramProfile(instagramProfile);
         }
+
+        public PlayerModel () {}
 
         public Integer getPlayerID() {
             return playerID;
@@ -94,11 +96,11 @@ package modelPackage;
             this.email = email;
         }
 
-        public boolean isPro() {
+        public boolean getIsPro() {
             return isPro;
         }
 
-        public void setPro(boolean isPro) {
+        public void setIsPro(boolean isPro) {
             this.isPro = isPro;
         }
 

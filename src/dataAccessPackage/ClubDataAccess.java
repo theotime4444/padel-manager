@@ -5,7 +5,7 @@ import modelPackage.ClubModel;
 
 public interface ClubDataAccess {
 
-    public Boolean createPlayer(ClubModel club) throws ClubCreationException;
-    public Boolean updatePlayer(ClubModel club) throws ClubCreationException;
-    public Boolean deletePlayer(ClubModel club) throws ClubDeletionException;
+    public Boolean createClub(ClubModel club) throws ClubCreationException;
+    public Boolean updateClub(ClubModel club) throws ClubCreationException;
+    public Boolean deleteClub(ClubModel club) throws ClubDeletionException;
 }

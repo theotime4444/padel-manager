@@ -45,7 +45,7 @@ public class PlayerDBAccess implements PlayerDataAccess {
             statement.setInt(5, player.getEloPoints());
             statement.setString(6, player.getPhoneNumber());
             statement.setString(7, player.getEmail());
-            statement.setBoolean(8, player.isPro());
+            statement.setBoolean(8, player.getIsPro());
             statement.setInt(9, player.getLocality());
 
             String insta = player.getInstagramProfile();
@@ -95,14 +95,13 @@ public class PlayerDBAccess implements PlayerDataAccess {
 
     // Delete
     public Boolean deletePlayer(PlayerModel player) throws PlayerDeletionException {
-
-
-        String query = "DELETE FROM player WHERE idPlayer = ?";
-
+        
         try {
+            if (player == null) throw new PlayerDeletionException("le joueur n'existe pas");
             connection = ConnectionDataAccess.getInstance();
-            PreparedStatement statement = connection.prepareStatement(query);
+            PreparedStatement statement = connection.prepareStatement("DELETE FROM player WHERE idPlayer = ?");
             statement.setInt(1, player.getPlayerID());
+            
             return statement.executeUpdate() != 0;
 
         }  catch (SQLException e) {
@@ -111,6 +110,73 @@ public class PlayerDBAccess implements PlayerDataAccess {
             throw new RuntimeException(e);
         }
     }
+
+    public List<PlayerModel> getAllPlayers() throws PlayerSearchException {
+
+        try {
+            String sql = "SELECT * FROM user";
+            Connection connection = ConnectionDataAccess.getInstance();
+            PreparedStatement statement = connection.prepareStatement(sql);
+            ResultSet rs = statement.executeQuery();
+
+            List<PlayerModel> players = new ArrayList<>();
+            while (rs.next()) {
+                players.add(fillPlayer(rs));
+            }
+
+            return players;
+
+        } catch (SQLException e) {
+            throw new PlayerSearchException(e.getMessage());
+        } catch (ConnectionDataAccessException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public PlayerModel fillPlayer(ResultSet rs) throws SQLException {
+
+        PlayerModel player = new PlayerModel();
+        player.setPlayerID(rs.getInt("idPlayer"));
+        player.setFirstname(rs.getString("firstName"));
+        player.setLastname(rs.getString("lastName"));
+        player.setBirthdayDate(rs.getDate("birthdayDate"));
+        player.setGender(rs.getString("gender").charAt(0));
+        player.setEloPoints(rs.getInt("eloPoints"));
+        player.setEmail(rs.getString("email"));
+        player.setLocality(rs.getInt("playerLocality"));
+        player.setIsPro(rs.getBoolean("isPro"));
+
+        if (rs.getString("phoneNumber") != null)
+            player.setPhoneNumber(rs.getString("phoneNumber"));
+
+        if (rs.getString("instagramProfile") != null)
+            player.setPhoneNumber(rs.getString("instagramProfile"));
+
+        return player;
+    }
+
+    public List<PlayerModel> getPlayersByFullName (String firstName, String lastName) throws PlayerSearchException {
+
+        List<PlayerModel> players = new ArrayList<>();
+
+        try {
+            Connection connection = ConnectionDataAccess.getInstance();
+            String sql = "SELECT * FROM player WHERE firstName = ? AND lastName = ?";
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1,firstName);
+            statement.setString(2,lastName);
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                players.add(fillPlayer(rs));
+            }
+        } catch (SQLException e) {
+            throw new PlayerSearchException(e.getMessage());
+        } catch (ConnectionDataAccessException e) {
+            throw new RuntimeException(e);
+        }
+        return players;
+    }
+
 
 
 

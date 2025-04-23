@@ -2,6 +2,7 @@ package dataAccessPackage;
 
 import exceptionPackage.*;
 import modelPackage.ClubModel;
+import modelPackage.PlayerModel;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -79,7 +80,7 @@ public class ClubDBAccess implements ClubDataAccess {
 
     }
 
-    public Boolean createPlayer(ClubModel club) throws ClubCreationException {
+    public Boolean createClub(ClubModel club) throws ClubCreationException {
 
         int lines = clubInsertionOrUpdate(club, true);
         if (lines == 0) throw new ClubCreationException("Le club n'a pas pu être créé");
@@ -87,7 +88,7 @@ public class ClubDBAccess implements ClubDataAccess {
 
     }
 
-    public Boolean updatePlayer(ClubModel club) throws ClubCreationException {
+    public Boolean updateClub(ClubModel club) throws ClubCreationException {
 
         int lines = clubInsertionOrUpdate(club, false);
         if (lines == 0) throw new ClubCreationException("Le club n'a pas pu être modifié");
@@ -95,14 +96,14 @@ public class ClubDBAccess implements ClubDataAccess {
 
     }
 
-    public Boolean deletePlayer(ClubModel club) throws ClubDeletionException {
-
-        String query = "DELETE FROM club WHERE idClub = ?";
+    public Boolean deleteClub(ClubModel club) throws ClubDeletionException {
 
         try {
+            if (club == null) throw new ClubDeletionException("le club n'existe pas");
             connection = ConnectionDataAccess.getInstance();
-            PreparedStatement statement = connection.prepareStatement(query);
+            PreparedStatement statement = connection.prepareStatement("DELETE FROM club WHERE idClub = ?");
             statement.setInt(1, club.getId());
+
             return statement.executeUpdate() != 0;
 
         }  catch (SQLException e) {
@@ -110,7 +111,8 @@ public class ClubDBAccess implements ClubDataAccess {
         } catch (ConnectionDataAccessException e) {
             throw new RuntimeException(e);
         }
-
     }
+
+
 
 }
