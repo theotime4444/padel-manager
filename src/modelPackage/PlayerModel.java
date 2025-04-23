@@ -13,12 +13,11 @@ package modelPackage;
         private String phoneNumber;
         private String email;
         private boolean isPro;
-        private Integer club;
         private Integer locality;
         private String instagramProfile;
 
         public PlayerModel(String lastname, String firstname, Date birthdayDate,
-                           char gender, int eloPoints, String phoneNumber, String email, boolean isPro) {
+                           char gender, int eloPoints, String phoneNumber, String email, boolean isPro, Integer locality, String instagramProfile) {
             setLastname(lastname);
             setFirstname(firstname);
             setBirthdayDate(birthdayDate);
@@ -27,6 +26,8 @@ package modelPackage;
             setPhoneNumber(phoneNumber);
             setEmail(email);
             setPro(isPro);
+            setLocality(locality);
+            setInstagramProfile(instagramProfile);
         }
 
         public Integer getPlayerID() {
@@ -99,14 +100,6 @@ package modelPackage;
 
         public void setPro(boolean isPro) {
             this.isPro = isPro;
-        }
-
-        public Integer getClub() {
-            return club;
-        }
-
-        public void setClub(Integer club) {
-            this.club = club;
         }
 
         public Integer getLocality() {
