@@ -71,7 +71,8 @@ PadelManager/
 │   │   ├── modelPackage/      # Modèles de données (PlayerModel, ClubModel, GameModel...)
 │   │   ├── mainPackage/       # Point d'entrée de l'application
 │   ├── resources/             # Fichiers de configuration et assets
-│   │   ├── application.properties
+│   │   ├── assets/
+│   │   ├── database.sql       # Fichier de configuration de la base de donnée MySQL
 │   ├── test/                  # Tests unitaires
 │── .gitignore
 │── padel-manager.iml
