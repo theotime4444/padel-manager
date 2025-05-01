@@ -8,90 +8,25 @@ import exceptionPackage.ConnectionDataAccessException;
 
 import java.sql.Date;
 import java.util.*;
+import java.util.regex.*;
 
 public class PlayerManager implements PlayerDataAccess {
-    private PlayerDataAccess playerDataAccess;
+    private final PlayerDataAccess playerDataAccess;
 
     public PlayerManager() throws ConnectionDataAccessException {
-        setPlayerDAO(new PlayerDBAccess());
-    }
-
-    private void setPlayerDAO(PlayerDataAccess dao) {
-        this.playerDataAccess = dao;
-    }
-
-    private Boolean validPlayer(PlayerModel player) throws PlayerCreationException {
-        String lastName = player.getLastname();
-        String firstName = player.getFirstname();
-        java.sql.Date birthdayDate = (Date) player.getBirthdayDate();
-        char gender = player.getGender();
-        int eloPoints = player.getEloPoints();
-        String phoneNumber = player.getPhoneNumber();
-        String email = player.getEmail();
-        boolean isPro = player.getIsPro();
-        int playerLocality = player.getLocality();
-        String instagramProfile = player.getInstagramProfile();
-
-        if (lastName == null
-            || firstName == null
-            || birthdayDate == null
-            || gender == null
-            || eloPoints == null
-            || email == null 
-            || isPro == null 
-            || playerLocality == null)
-            throw new PlayerCreationException("Un ou plusieurs champs sont nuls");
-
-        if (lastName.trim().isEmpty() || firstName.trim().isEmpty() || email.trim().isEmpty())
-            throw new PlayerCreationException("Un ou plusieurs champs sont vides");
-
-        String emailRegex = "^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$";
-        Pattern pattern = Pattern.compile(emailRegex);
-        Matcher matcher = pattern.matcher(email);
-        if (!matcher.matches())
-            throw new PlayerCreationException("L'email n'est pas valide");
-
-        if (!main.utilPackage.FormValidator.validStringLength(email, 1, 50))
-            throw new PlayerCreationException("L'email doit être compris entre 1 et 50 caractères");
-
-        if (!main.utilPackage.FormValidator.validStringLength(lastName, 1, 50))
-            throw new PlayerCreationException("Le nom doit être compris entre 1 et 50 caractères");
-
-        if (!main.utilPackage.FormValidator.validStringLength(firstName, 1, 50))
-            throw new PlayerCreationException("Le prénom doit être compris entre 1 et 50 caractères");
-
-        if (!main.utilPackage.FormValidator.validDateOfBirth(birthdayDate.toLocalDate()))
-            throw new PlayerCreationException("La date de naissance n'est pas valide");
-
-        if (!main.utilPackage.FormValidator.validGender(gender))
-            throw new PlayerCreationException("Le genre n'est pas valide");
-
-        if (!main.utilPackage.FormValidator.validEloPoints(eloPoints))
-            throw new PlayerCreationException("Les points ELO ne sont pas valides");
-
-        if (!main.utilPackage.FormValidator.isFieldNull(phoneNumber) && !main.utilPackage.FormValidator.validStringLength(phoneNumber, 1, 20))
-            throw new PlayerCreationException("Le numéro de téléphone n'est pas valide");
-
-        if (!main.utilPackage.FormValidator.isFieldNull(instagramProfile) && !main.utilPackage.FormValidator.validStringLength(instagramProfile, 1, 255))
-            throw new PlayerCreationException("Le profil Instagram n'est pas valide");
-
-        if (!main.utilPackage.FormValidator.validBoolean(isPro))
-            throw new PlayerCreationException("Le statut professionnel n'est pas valide");
-
-        if (!main.utilPackage.FormValidator.validId(playerLocality))
-            throw new PlayerCreationException("La localité n'est pas valide");
-
-        return true;
+        this.playerDataAccess = new PlayerDBAccess();
     }
 
     @Override
     public Boolean createPlayer(PlayerModel player) throws PlayerCreationException {
-        return validPlayer(player) ? playerDataAccess.createPlayer(player) : false;
+        validatePlayer(player);
+        return playerDataAccess.createPlayer(player);
     }
 
     @Override
     public Boolean updatePlayer(PlayerModel player) throws PlayerCreationException, PlayerUpdateException {
-        return validPlayer(player) ? playerDataAccess.updatePlayer(player) : false;
+        validatePlayer(player);
+        return playerDataAccess.updatePlayer(player);
     }
 
     @Override
@@ -112,5 +47,71 @@ public class PlayerManager implements PlayerDataAccess {
     @Override
     public Boolean deletePlayer(PlayerModel player) throws PlayerDeletionException {
         return playerDataAccess.deletePlayer(player);
+    }
+
+    //Validation
+    private void validatePlayer(PlayerModel player) throws PlayerCreationException {
+        if (player == null) throw new PlayerCreationException("Le joueur est nul");
+
+        checkRequiredString(player.getLastname(), "Le nom", 1, 50);
+        checkRequiredString(player.getFirstname(), "Le prénom", 1, 50);
+        checkValidEmail(player.getEmail());
+        checkValidDate((Date) player.getBirthdayDate(), "La date de naissance");
+        checkValidGender(player.getGender());
+        checkValidRange(player.getEloPoints(), 0, 5000, "Les points ELO"); // plage à adapter
+        checkValidId(player.getLocality(), "La localité");
+
+        checkOptionalString(player.getPhoneNumber(), "Le numéro de téléphone", 1, 20);
+        checkOptionalString(player.getInstagramProfile(), "Le profil Instagram", 1, 255);
+    }
+
+    private void checkRequiredString(String value, String fieldName, int min, int max) throws PlayerCreationException {
+        if (value == null || value.trim().isEmpty()) {
+            throw new PlayerCreationException(fieldName + " est obligatoire.");
+        }
+        if (value.length() < min || value.length() > max) {
+            throw new PlayerCreationException(fieldName + " doit faire entre " + min + " et " + max + " caractères.");
+        }
+    }
+
+    private void checkOptionalString(String value, String fieldName, int min, int max) throws PlayerCreationException {
+        if (value != null && (value.length() < min || value.length() > max)) {
+            throw new PlayerCreationException(fieldName + " doit faire entre " + min + " et " + max + " caractères.");
+        }
+    }
+
+    private void checkValidEmail(String email) throws PlayerCreationException {
+        checkRequiredString(email, "L'email", 1, 50);
+        String emailRegex = "^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$";
+        if (!Pattern.matches(emailRegex, email)) {
+            throw new PlayerCreationException("L'email n'est pas valide.");
+        }
+    }
+
+    private void checkValidDate(Date date, String fieldName) throws PlayerCreationException {
+        if (date == null) {
+            throw new PlayerCreationException(fieldName + " est obligatoire.");
+        }
+        if (date.toLocalDate().isAfter(java.time.LocalDate.now())) {
+            throw new PlayerCreationException(fieldName + " ne peut pas être dans le futur.");
+        }
+    }
+
+    private void checkValidGender(char gender) throws PlayerCreationException {
+        if (gender != 'M' && gender != 'F') {
+            throw new PlayerCreationException("Le genre doit être 'M' ou 'F'.");
+        }
+    }
+
+    private void checkValidRange(int value, int min, int max, String fieldName) throws PlayerCreationException {
+        if (value < min || value > max) {
+            throw new PlayerCreationException(fieldName + " doit être compris entre " + min + " et " + max + ".");
+        }
+    }
+
+    private void checkValidId(int id, String fieldName) throws PlayerCreationException {
+        if (id <= 0) {
+            throw new PlayerCreationException(fieldName + " doit être un identifiant positif.");
+        }
     }
 }
