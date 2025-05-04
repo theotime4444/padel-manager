@@ -15,18 +15,19 @@ public class ClubModel {
     private Boolean isBeginnersFriendly;
     private String instagramProfile;
 
-    public ClubModel(int id, String name, String streetAddress, int localityID, String phoneNumber, Date creationDate, String website, boolean isBeginnersFriendly, String instagramProfile) {
+    public ClubModel(Integer id, String name, String streetAddress, int localityID, String phoneNumber, Date creationDate, String website, boolean isBeginnersFriendly, String instagramProfile) {
+        setId(id);
         setName(name);
         setStreetAddress(streetAddress);
         setLocalityID(localityID);
         setPhoneNumber(phoneNumber);
         setCreationDate(creationDate);
         setWebsite(website);
-        setBeginnersFriendly(isBeginnersFriendly);
+        setIsBeginnersFriendly(isBeginnersFriendly);
         setInstagramProfile(instagramProfile);
     }
 
-
+    public ClubModel() {}
 
     public Integer getId() { return id; }
     public void setId(Integer id) {this.id = id;}
@@ -50,10 +51,9 @@ public class ClubModel {
     public void setWebsite(String website) {this.website = website;}
 
     public boolean getIsBeginnersFriendly() {return isBeginnersFriendly;}
-    public void setBeginnersFriendly(boolean beginnersFriendly) {isBeginnersFriendly = beginnersFriendly;}
+    public void setIsBeginnersFriendly(boolean beginnersFriendly) {isBeginnersFriendly = beginnersFriendly;}
 
     public String getInstagramProfile() {return instagramProfile;}
     public void setInstagramProfile(String instagramProfile) {this.instagramProfile = instagramProfile;}
-
 
 }

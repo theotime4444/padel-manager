@@ -4,7 +4,6 @@ import main.exceptionPackage.*;
 import main.modelPackage.PlayerModel;
 import main.dataAccessPackage.PlayerDataAccess;
 import main.dataAccessPackage.PlayerDBAccess;
-import main.exceptionPackage.ConnectionDataAccessException;
 
 import java.sql.Date;
 import java.util.*;
@@ -50,7 +49,7 @@ public class PlayerManager implements PlayerDataAccess {
     }
 
     //Validation
-    private void validatePlayer(PlayerModel player) throws PlayerCreationException {
+    public void validatePlayer(PlayerModel player) throws PlayerCreationException {
         if (player == null) throw new PlayerCreationException("Le joueur est nul");
 
         checkRequiredString(player.getLastname(), "Le nom", 1, 50);

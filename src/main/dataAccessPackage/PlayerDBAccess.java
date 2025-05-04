@@ -160,7 +160,7 @@ public class PlayerDBAccess implements PlayerDataAccess {
 
     public List<PlayerModel> getPlayersByFullName (String firstName, String lastName) throws PlayerSearchException {
 
-        String query = "SELECT * FROM player WHERE firstName = ? AND lastName = ?";
+        String query = "SELECT * FROM player WHERE firstName ILIKE ? AND lastName ILIKE ?";
 
         try {
             Connection connection = ConnectionDataAccess.getInstance();
@@ -204,7 +204,6 @@ public class PlayerDBAccess implements PlayerDataAccess {
             throw new RuntimeException(e);
         }
     }
-
 
      /*
 

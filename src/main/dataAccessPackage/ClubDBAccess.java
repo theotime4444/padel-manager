@@ -2,34 +2,31 @@ package main.dataAccessPackage;
 
 import main.exceptionPackage.*;
 import main.modelPackage.ClubModel;
+import main.modelPackage.PlayerModel;
 
 import java.sql.*;
+import java.util.*;
 
 public class ClubDBAccess implements ClubDataAccess {
-
-    private Connection connection;
-
     public ClubDBAccess() throws ConnectionDataAccessException {
     }
 
-    public int clubInsertionOrUpdate(ClubModel club, boolean create) throws ClubCreationException {
+    public int clubInsertionOrUpdate(ClubModel club, OperationType operationType) throws ClubCreationException {
 
-        String sqlInsertion = "INSERT INTO club (clubName,streetAddress,locality,phoneNumber,creationDate,website,isBeginnersFriendly,instagramProfile) " +
+        String insertionQuery = "INSERT INTO club (clubName,streetAddress,locality,phoneNumber,creationDate,website,isBeginnersFriendly,instagramProfile) " +
                 "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
-        String sqlUpdate = "UPDATE club SET clubName = ?, streetAddress = ?, locality = ?, phoneNumber = ?, " +
+        String updateQuery = "UPDATE club SET clubName = ?, streetAddress = ?, locality = ?, phoneNumber = ?, " +
                 "creationDate = ?, website = ?, isBeginnersFriendly = ?, instagramProfile = ?, WHERE idClub = ?";
 
         try {
-
-            connection = ConnectionDataAccess.getInstance();
+            Connection connection = ConnectionDataAccess.getInstance();
             PreparedStatement statement;
 
-            if (create) {
-                // Ajoute RETURN_GENERATED_KEYS pour récupérer l'ID auto-généré
-                statement = connection.prepareStatement(sqlInsertion, Statement.RETURN_GENERATED_KEYS);
+            if (operationType == OperationType.INSERT) {
+                statement = connection.prepareStatement(insertionQuery, Statement.RETURN_GENERATED_KEYS);
             } else {
-                statement = connection.prepareStatement(sqlUpdate);
+                statement = connection.prepareStatement(updateQuery);
             }
 
             statement.setString(1, club.getName());
@@ -49,7 +46,7 @@ public class ClubDBAccess implements ClubDataAccess {
             statement.setString(8, club.getInstagramProfile());
 
 
-            if (!create) {
+            if (operationType == OperationType.UPDATE) {
                 // Pour update, on ajoute le player_id en 9e paramètre
                 statement.setInt(9, club.getId());
             }
@@ -57,7 +54,7 @@ public class ClubDBAccess implements ClubDataAccess {
             int rowsAffected = statement.executeUpdate();
 
             // Récupération de l'ID si on a fait un INSERT
-            if (create) {
+            if (operationType == OperationType.INSERT) {
                 ResultSet rs = statement.getGeneratedKeys();
                 if (rs.next()) {
                     int generatedId = rs.getInt(1);
@@ -67,8 +64,6 @@ public class ClubDBAccess implements ClubDataAccess {
 
             return rowsAffected;
 
-
-
         } catch (SQLException e){
             throw new ClubCreationException(e.getMessage());
         } catch (ConnectionDataAccessException e) {
@@ -77,31 +72,96 @@ public class ClubDBAccess implements ClubDataAccess {
 
     }
 
+    //Create
     public Boolean createClub(ClubModel club) throws ClubCreationException {
-
-        int lines = clubInsertionOrUpdate(club, true);
+        int lines = clubInsertionOrUpdate(club, OperationType.INSERT);
         if (lines == 0) throw new ClubCreationException("Le club n'a pas pu être créé");
         return true;
 
     }
 
+    //Update
     public Boolean updateClub(ClubModel club) throws ClubCreationException {
 
-        int lines = clubInsertionOrUpdate(club, false);
+        int lines = clubInsertionOrUpdate(club, OperationType.UPDATE);
         if (lines == 0) throw new ClubCreationException("Le club n'a pas pu être modifié");
         return true;
 
     }
 
-    public Boolean deleteClub(ClubModel club) throws ClubDeletionException {
+    //Read
+    public ClubModel fillClub(ResultSet rs) throws SQLException {
+
+        ClubModel club = new ClubModel();
+        club.setId(rs.getInt("idClub"));
+        club.setName(rs.getString("name"));
+        club.setStreetAddress(rs.getString("streetAddress"));
+        club.setLocalityID(rs.getInt("locality"));
+        club.setPhoneNumber(rs.getString("phoneNumber"));
+        club.setCreationDate(rs.getDate("creationDate"));
+        club.setWebsite(rs.getString("website"));
+        club.setIsBeginnersFriendly(rs.getBoolean("isBeginnersFriendly"));
+        club.setInstagramProfile(rs.getString("instagramProfile"));
+
+        String website = rs.getString("website");
+        if (!rs.wasNull()) {
+            club.setWebsite(website);
+        }
+
+        String instagramProfile = rs.getString("instagramProfile");
+        if (!rs.wasNull()) {
+            club.setInstagramProfile(instagramProfile);
+        }
+
+        return club;
+    }
+
+    public ClubModel getLastClubByPlayer(PlayerModel player) throws ClubSearchException {
+        if (player == null) throw new ClubSearchException("Le club n'existe pas");
+
+        String query = """
+            SELECT c.*
+            FROM Club c
+            JOIN Membership m ON m.Club = c.idClub
+            WHERE m.Player = ?
+            ORDER BY m.registrationDate DESC
+            LIMIT 1
+        """;
 
         try {
-            if (club == null) throw new ClubDeletionException("le club n'existe pas");
-            connection = ConnectionDataAccess.getInstance();
-            PreparedStatement statement = connection.prepareStatement("DELETE FROM club WHERE idClub = ?");
-            statement.setInt(1, club.getId());
+            Connection connection = ConnectionDataAccess.getInstance();
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setInt(1, player.getPlayerID());
+            ResultSet rs = statement.executeQuery();
 
-            return statement.executeUpdate() != 0;
+            ClubModel club = new ClubModel();
+            if(rs.next()) {
+                club = fillClub(rs);
+            }
+
+            return club;
+
+        }  catch (SQLException e) {
+            throw new ClubSearchException(e.getMessage());
+        } catch (ConnectionDataAccessException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    //Delete
+    public Boolean deleteClub(ClubModel club) throws ClubDeletionException {
+        if (club == null) throw new ClubDeletionException("le club n'existe pas");
+
+        String query = "DELETE FROM club WHERE idClub = ?";
+
+        try {
+            Connection connection = ConnectionDataAccess.getInstance();
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setInt(1, club.getId());
+            int rowsAffected = statement.executeUpdate();
+
+            if (rowsAffected == 0) throw new ClubDeletionException("Le club n'a pas pu être supprimé");
+            return true;
 
         }  catch (SQLException e) {
             throw new ClubDeletionException(e.getMessage());
@@ -109,7 +169,5 @@ public class ClubDBAccess implements ClubDataAccess {
             throw new RuntimeException(e);
         }
     }
-
-
 
 }
