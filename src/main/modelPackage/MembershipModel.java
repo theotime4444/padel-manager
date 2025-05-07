@@ -1,38 +1,26 @@
 package main.modelPackage;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class MembershipModel {
     private Integer clubId;
     private Integer playerId;
-    private LocalDate registrationDate;
+    private LocalDateTime registrationDate;
 
-    public MembershipModel(LocalDate registrationDate) {
-
-        this.registrationDate = registrationDate;
+    public MembershipModel(Integer clubId, Integer playerId, LocalDateTime registrationDate) {
+        setClubId(clubId);
+        setPlayerId(playerId);
+        setRegistrationDate(registrationDate);
     }
 
-    public Integer getClubId() {
-        return clubId;
-    }
+    public MembershipModel() {}
 
-    public void setClubId(Integer club) {
-        this.clubId = club;
-    }
+    public Integer getClubId() { return clubId; }
+    public void setClubId(Integer clubId) { this.clubId = clubId; }
 
-    public Integer getPlayerId() {
-        return playerId;
-    }
+    public Integer getPlayerId() { return playerId; }
+    public void setPlayerId(Integer playerId) { this.playerId = playerId; }
 
-    public void setPlayerId(Integer player) {
-        this.playerId = player;
-    }
-
-    public LocalDate getRegistrationDate() {
-        return registrationDate;
-    }
-
-    public void setRegistrationDate(LocalDate registrationDate) {
-        this.registrationDate = registrationDate;
-    }
+    public LocalDateTime getRegistrationDate() { return registrationDate; }
+    public void setRegistrationDate(LocalDateTime registrationDate) { this.registrationDate = registrationDate; }
 }
