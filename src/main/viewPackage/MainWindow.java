@@ -30,8 +30,9 @@ public class MainWindow extends JFrame {
         connectionController = new ConnectionDataAccessController();
         homePanel = new HomePanel();
         researchPlayer = new ResearchPlayer(this);
+        menuBar = new MenuBar(this);
 
-        switchPanel(researchPlayer);
+        switchPanel(homePanel);
         setVisible(true);
     }
 
@@ -65,5 +66,9 @@ public class MainWindow extends JFrame {
 
     public JPanel getHomePanel() {
         return homePanel;
+    }
+
+    public JPanel getResearchPlayer() {
+        return researchPlayer;
     }
 }

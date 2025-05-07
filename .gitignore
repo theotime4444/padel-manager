@@ -30,5 +30,7 @@ bin/
 
 .idea/
 
+padel-manager.iml
+
 ### Ancien Projet ###
 src/AncienProjet/

@@ -111,7 +111,7 @@ public class ResearchPlayer extends JPanel implements ActionListener {
             }
 
             if (players.isEmpty()) {
-                mainWindow.displayError("Aucun joueur trouvé avec ce nom et prénom.");
+                mainWindow.displayMessage("Aucun joueur trouvé avec ce nom et prénom.", "");
             }
 
         } catch (PlayerSearchException exception) {

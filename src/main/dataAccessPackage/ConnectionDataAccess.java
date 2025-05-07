@@ -8,7 +8,7 @@ import java.sql.SQLException;
 
 public class ConnectionDataAccess {
 
-    private static final String URL = "jdbc:mysql://localhost:3306/mydbpaddle";
+    private static final String URL = "jdbc:mysql://127.0.0.1:3306/mydbPaddle";
     private static final String USER = "root";
     private static final String PASSWORD = "paddle";
     private static Connection connection;

@@ -13,10 +13,10 @@ public class PlayerDBAccess implements PlayerDataAccess {
 
     public int playerInsertionOrUpdate(PlayerModel player, OperationType operationType) throws PlayerCreationException {
 
-        String insertionQuery = "INSERT INTO player (lastName, firstName, birthdayDate, gender, eloPoints, phoneNumber, email, isPro, playerLocality, instagramProfile) " +
+        String insertionQuery = "INSERT INTO Player (lastName, firstName, birthdayDate, gender, eloPoints, phoneNumber, email, isPro, playerLocality, instagramProfile) " +
                 "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-        String updateQuery = "UPDATE player SET lastName = ?, firstName = ?, birthdayDate = ?, gender = ?, " +
+        String updateQuery = "UPDATE Player SET lastName = ?, firstName = ?, birthdayDate = ?, gender = ?, " +
                 "eloPoints = ?, phoneNumber = ?, email = ?, isPro = ?,  " +
                 "playerLocality = ?, instagramProfile = ? WHERE idPlayer = ?";
 
@@ -113,7 +113,7 @@ public class PlayerDBAccess implements PlayerDataAccess {
 
     public List<PlayerModel> getAllPlayers() throws PlayerSearchException {
 
-        String query = "SELECT * FROM user";
+        String query = "SELECT * FROM User";
 
         try {
             Connection connection = ConnectionDataAccess.getInstance();
@@ -136,7 +136,7 @@ public class PlayerDBAccess implements PlayerDataAccess {
 
     public PlayerModel getPlayerById(int id) throws PlayerSearchException {
 
-        String query = "SELECT * FROM player WHERE player_id = ?";
+        String query = "SELECT * FROM Player WHERE player_id = ?";
 
         try {
             Connection connection = ConnectionDataAccess.getInstance();
@@ -160,13 +160,13 @@ public class PlayerDBAccess implements PlayerDataAccess {
 
     public List<PlayerModel> getPlayersByFullName (String firstName, String lastName) throws PlayerSearchException {
 
-        String query = "SELECT * FROM player WHERE firstName ILIKE ? AND lastName ILIKE ?";
+        String query = "SELECT * FROM Player WHERE LOWER(firstName) LIKE LOWER(?) AND LOWER(lastName) LIKE LOWER(?)";
 
         try {
             Connection connection = ConnectionDataAccess.getInstance();
             PreparedStatement statement = connection.prepareStatement(query);
-            statement.setString(1,firstName);
-            statement.setString(2,lastName);
+            statement.setString(1, "%" + firstName + "%");
+            statement.setString(2, "%" + lastName + "%");
             ResultSet rs = statement.executeQuery();
 
             List<PlayerModel> players = new ArrayList<>();
@@ -187,7 +187,7 @@ public class PlayerDBAccess implements PlayerDataAccess {
     public Boolean deletePlayer(PlayerModel player) throws PlayerDeletionException {
         if (player == null) throw new PlayerDeletionException("Le joueur n'existe pas");
 
-        String query = "DELETE FROM player WHERE idPlayer = ?";
+        String query = "DELETE FROM Player WHERE idPlayer = ?";
 
         try {
             Connection connection = ConnectionDataAccess.getInstance();
