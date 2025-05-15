@@ -12,6 +12,8 @@ public class LocalityModel {
         setCity(city);
     }
 
+    public LocalityModel() {}
+
     public Integer getLocalityID() {
         return localityID;
     }

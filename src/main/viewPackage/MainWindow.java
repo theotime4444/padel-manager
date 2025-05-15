@@ -1,8 +1,7 @@
 package main.viewPackage;
 
 import main.controllerPackage.ConnectionDataAccessController;
-import main.exceptionPackage.ConnectionDataAccessException;
-import main.exceptionPackage.PlayerSearchException;
+import main.exceptionPackage.*;
 import main.viewPackage.ResearchPlayer;
 
 import javax.swing.*;
