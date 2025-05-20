@@ -6,9 +6,8 @@ import main.modelPackage.LocalityModel;
 import java.sql.*;
 import java.util.*;
 
-public class LocalityDBAccess {
-    public LocalityDBAccess() throws ConnectionDataAccessException {
-    }
+public class LocalityDBAccess implements LocalityDataAccess {
+    public LocalityDBAccess() {}
 
     // Read
     public LocalityModel fillLocality(ResultSet rs) throws SQLException {
@@ -20,8 +19,9 @@ public class LocalityDBAccess {
         return locality;
     }
 
+    @Override
     public LocalityModel getLocalityById(int id) throws LocalitySearchException {
-        String query = "SELECT * FROM locality WHERE idLocality = ?";
+        String query = "SELECT * FROM Locality WHERE idLocality = ?";
 
         try {
             Connection connection = ConnectionDataAccess.getInstance();
@@ -35,13 +35,34 @@ public class LocalityDBAccess {
             return null;
 
         } catch (SQLException e) {
-            throw new LocalitySearchException(e.getMessage());
+            throw new LocalitySearchException("Erreur lors de la recherche de la localité: " + e.getMessage());
         } catch (ConnectionDataAccessException e) {
-            throw new RuntimeException(e);
+            throw new LocalitySearchException("Erreur de connexion lors de la recherche de la localité: " + e.getMessage());
         }
     }
 
-}
+    @Override
+    public List<LocalityModel> getAllLocalities() throws LocalitySearchException {
+        String query = "SELECT * FROM Locality ORDER BY city";
+        List<LocalityModel> localities = new ArrayList<>();
+
+        try {
+            Connection connection = ConnectionDataAccess.getInstance();
+            Statement statement = connection.createStatement();
+            ResultSet rs = statement.executeQuery(query);
+
+            while (rs.next()) {
+                localities.add(fillLocality(rs));
+            }
+
+            return localities;
+
+        } catch (SQLException e) {
+            throw new LocalitySearchException("Erreur lors de la récupération des localités: " + e.getMessage());
+        } catch (ConnectionDataAccessException e) {
+            throw new LocalitySearchException("Erreur de connexion lors de la recherche des localités: " + e.getMessage());
+        }
+    }
 
     /*
     public int localityInsertionOrUpdate(LocalityModel locality, OperationType operationType) throws localityCreationException {
@@ -81,18 +102,19 @@ public class LocalityDBAccess {
             return rowsAffected;
 
         } catch (SQLException e) {
-            throw new LocalityCreationException(e.getMessage());
+            throw new LocalityCreationException("création", e.getMessage());
         } catch (ConnectionDataAccessException e) {
-            throw new RuntimeException(e);
+            throw new ConnectionDataAccessException("connexion", "Erreur de connexion lors de la création de la localité: " + e.getMessage());
         }
     }
 
     // Create
     public Boolean createMembership(MembershipModel membership) throws MembershipCreationException {
         int lines = membershipInsertionOrUpdate(membership, OperationType.INSERT);
-        if (lines == 0) throw new MembershipCreationException("L'adhésion n'a pas pu être créée");
+        if (lines == 0) throw new MembershipCreationException("création", "L'adhésion n'a pas pu être créée");
         return true;
     }
     */
+}
 
 

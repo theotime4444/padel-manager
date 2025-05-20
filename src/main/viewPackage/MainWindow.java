@@ -2,7 +2,6 @@ package main.viewPackage;
 
 import main.controllerPackage.ConnectionDataAccessController;
 import main.exceptionPackage.*;
-import main.viewPackage.ResearchPlayer;
 
 import javax.swing.*;
 import java.awt.*;
@@ -17,6 +16,12 @@ public class MainWindow extends JFrame {
 
     private JPanel homePanel;
     private JPanel researchPlayer;
+    private JPanel crudPlayer;
+    private JPanel crudClub;
+    private JPanel researchTournamentMatches;
+    private JPanel researchPlayerRegion;
+    private JPanel thread;
+
     private MenuBar menuBar;
     private ConnectionDataAccessController connectionController;
 
@@ -27,8 +32,18 @@ public class MainWindow extends JFrame {
         setBounds(X_BOUNDS, Y_BOUNDS, FRAME_WIDTH, FRAME_HEIGHT);
 
         connectionController = new ConnectionDataAccessController();
+
         homePanel = new HomePanel();
+        // CRUD
+        crudPlayer = new CrudPlayer(this);
+        crudClub = new CrudClub(this);
+        // Research
         researchPlayer = new ResearchPlayer(this);
+        researchTournamentMatches = new ResearchTournamentMatches(this);
+        researchPlayerRegion = new ResearchPlayerRegion(this);
+        // Tread
+        //thread = new Thread(this);
+
         menuBar = new MenuBar(this);
 
         switchPanel(homePanel);
@@ -67,7 +82,31 @@ public class MainWindow extends JFrame {
         return homePanel;
     }
 
+
+    public JPanel getCrudPlayer() {
+        return crudPlayer;
+    }
+
+
+    public JPanel getCrudClub() {
+        return crudClub;
+    }
+
     public JPanel getResearchPlayer() {
         return researchPlayer;
     }
+
+    public JPanel getResearchTournamentMatches() {
+        return researchTournamentMatches;
+    }
+
+    public JPanel getResearchPlayerRegion() {
+        return researchPlayerRegion;
+    }
+
+    public JPanel getThread() {
+        return thread;
+    }
+    
+    
 }

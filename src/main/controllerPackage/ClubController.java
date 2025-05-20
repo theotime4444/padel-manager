@@ -10,24 +10,32 @@ import java.util.*;
 public class ClubController {
     private ClubManager clubManager;
 
-    public ClubController() throws ConnectionDataAccessException {
+    public ClubController() {
         clubManager = new ClubManager();
     }
 
-    public Boolean createClub(ClubModel club) throws ClubCreationException {
+    public List<ClubModel> getAllClubs() throws ClubSearchException {
+        return clubManager.getAllClubs();
+    }
+
+    public Boolean createClub(ClubModel club) throws ClubCreationException, ValidationException {
         return clubManager.createClub(club);
     }
 
-    public Boolean updateClub(ClubModel club) throws ClubCreationException {
+    public Boolean updateClub(ClubModel club) throws ClubUpdateException, ValidationException {
         return clubManager.updateClub(club);
     }
 
-    public ClubModel getLastClubByPlayer(PlayerModel player) throws ClubSearchException, ConnectionDataAccessException, PlayerCreationException {
+    public ClubModel getLastClubByPlayer(PlayerModel player) throws ClubSearchException, ValidationException {
         return clubManager.getLastClubByPlayer(player);
     }
 
     public Boolean deleteClub(ClubModel club) throws ClubDeletionException {
         return clubManager.deleteClub(club);
+    }
+
+    public ClubModel getClubById(int id) throws ClubSearchException {
+        return clubManager.getClubById(id);
     }
 
 }

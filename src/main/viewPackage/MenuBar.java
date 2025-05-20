@@ -7,47 +7,80 @@ import java.awt.event.ActionListener;
 public class MenuBar implements ActionListener {
     private MainWindow mainWindow;
     private JMenuBar menuBar;
-    private JMenu menu;
+    private JMenu menuMain;
     private JMenu menuPlayers;
+    private JMenu menuSearch;
+    private JMenu menuThread;
     private JMenuItem home;
     private JMenuItem exit;
+    private JMenuItem crudPlayer;
+    private JMenuItem crudClub;
     private JMenuItem researchPlayer;
-    private JMenuItem playerList;
+    private JMenuItem researchTournamentMatches;
+    private JMenuItem researchPlayerRegion;
+    private JMenuItem thread;
 
     public MenuBar(MainWindow mainWindow) {
         this.mainWindow = mainWindow;
 
-        menuBar = new JMenuBar();
-        menu = new JMenu("Menu");
-        menuPlayers = new JMenu("Joueurs");
-
         // Menu principal
+        menuMain = new JMenu("Menu");
+
         home = new JMenuItem("Retour à l'accueil");
         home.addActionListener(this);
 
         exit = new JMenuItem("Quitter le programme");
         exit.addActionListener(this);
 
-        // Menu Joueurs
-        researchPlayer = new JMenuItem("Rechercher un joueur");
+        menuMain.add(home);
+        menuMain.addSeparator();
+        menuMain.add(exit);
+
+        // CRUD
+        menuPlayers = new JMenu("CRUD");
+
+        crudPlayer = new JMenuItem("Player");
+        crudPlayer.addActionListener(this);
+
+        crudClub = new JMenuItem("Club");
+        crudClub.addActionListener(this);
+
+        menuPlayers.add(crudPlayer);
+        menuPlayers.addSeparator();
+        menuPlayers.add(crudClub);
+
+        // Recherche
+        menuSearch = new JMenu("Recherche");
+
+        researchPlayer = new JMenuItem("Afficher information de joueurs");
         researchPlayer.addActionListener(this);
 
-        playerList = new JMenuItem("Liste des joueurs");
-        playerList.addActionListener(this);
+        researchTournamentMatches = new JMenuItem("Afficher les matchs d’un tournoi");
+        researchTournamentMatches.addActionListener(this);
 
-        // Ajout des éléments au menu principal
-        menu.add(home);
-        menu.addSeparator();
-        menu.add(exit);
+        researchPlayerRegion = new JMenuItem("Recherche joueurs selon “region” et affichage en ordre décroissant sur la valeur de “elopoint”");
+        researchPlayerRegion.addActionListener(this);
 
-        // Ajout des éléments au menu Joueurs
-        menuPlayers.add(researchPlayer);
-        menuPlayers.addSeparator();
-        menuPlayers.add(playerList);
+        menuSearch.add(researchPlayer);
+        menuSearch.addSeparator();
+        menuSearch.add(researchTournamentMatches);
+        menuSearch.addSeparator();
+        menuSearch.add(researchPlayerRegion);
 
-        // Ajout des menus à la barre de menu
-        menuBar.add(menu);
+        // Thread
+        menuThread = new JMenu("Thread");
+
+        thread = new JMenuItem("Thread");
+        thread.addActionListener(this);
+
+        menuThread.add(thread);
+
+        // Bar
+        menuBar = new JMenuBar();
+
+        menuBar.add(menuMain);
         menuBar.add(menuPlayers);
+        menuBar.add(menuSearch);
 
         // Ajout de la barre de menu à la fenêtre principale
         this.mainWindow.setJMenuBar(menuBar);
@@ -57,11 +90,20 @@ public class MenuBar implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == home) {
             mainWindow.switchPanel(mainWindow.getHomePanel());
+        } else if (e.getSource() == crudPlayer) {
+            mainWindow.switchPanel(mainWindow.getCrudPlayer());
+        } else if (e.getSource() == crudClub) {
+            mainWindow.switchPanel(mainWindow.getCrudClub());
         } else if (e.getSource() == researchPlayer) {
             mainWindow.switchPanel(mainWindow.getResearchPlayer());
+        } else if (e.getSource() == researchTournamentMatches) {
+            mainWindow.switchPanel(mainWindow.getResearchTournamentMatches());
+        } else if (e.getSource() == researchPlayerRegion) {
+            mainWindow.switchPanel(mainWindow.getResearchPlayerRegion());
         } else if (e.getSource() == exit) {
             mainWindow.exit();
+        } else if (e.getSource() == thread) {
+            mainWindow.switchPanel(mainWindow.getThread());
         }
-        // Le playerList sera implémenté plus tard
     }
 } 

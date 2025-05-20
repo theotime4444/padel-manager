@@ -7,44 +7,39 @@ import java.sql.*;
 import java.util.*;
 
 public class MembershipDBAccess implements MembershipDataAccess {
-    public MembershipDBAccess() throws ConnectionDataAccessException {
-    }
+    public MembershipDBAccess() {}
 
-    public int membershipInsertionOrUpdate(MembershipModel membership, OperationType operationType) throws MembershipCreationException {
+    public int membershipInsertionOrUpdate(MembershipModel membership, OperationType operationType) throws SQLException, ConnectionDataAccessException {
         String insertionQuery = "INSERT INTO Membership (registrationDate, Club, Player) VALUES (?, ?, ?)";
         String updateQuery = "UPDATE Membership SET registrationDate = ?, Club = ?, Player = ? WHERE registrationDate = ? AND Club = ? AND Player = ?";
 
+        Connection connection = ConnectionDataAccess.getInstance();
+        PreparedStatement statement;
+
+        if (operationType == OperationType.INSERT) {
+            statement = connection.prepareStatement(insertionQuery);
+        } else {
+            statement = connection.prepareStatement(updateQuery);
+        }
+
+        statement.setTimestamp(1, Timestamp.valueOf(membership.getRegistrationDate()));
+        statement.setInt(2, membership.getClubId());
+        statement.setInt(3, membership.getPlayerId());
+
+        return statement.executeUpdate();
+    }
+
+    public Boolean createMembership(MembershipModel membership) throws MembershipCreationException {
         try {
-            Connection connection = ConnectionDataAccess.getInstance();
-            PreparedStatement statement;
-
-            if (operationType == OperationType.INSERT) {
-                statement = connection.prepareStatement(insertionQuery);
-            } else {
-                statement = connection.prepareStatement(updateQuery);
-            }
-
-            statement.setTimestamp(1, Timestamp.valueOf(membership.getRegistrationDate()));
-            statement.setInt(2, membership.getClubId());
-            statement.setInt(3, membership.getPlayerId());
-
-            return statement.executeUpdate();
-
+            int rowsAffected = membershipInsertionOrUpdate(membership, OperationType.INSERT);
+            return rowsAffected > 0;
         } catch (SQLException e) {
-            throw new MembershipCreationException(e.getMessage());
+            throw new MembershipCreationException("Erreur lors de la création de l'adhésion: " + e.getMessage());
         } catch (ConnectionDataAccessException e) {
-            throw new RuntimeException(e);
+            throw new MembershipCreationException("Erreur de connexion lors de la création de l'adhésion: " + e.getMessage());
         }
     }
 
-    // Create
-    public Boolean createMembership(MembershipModel membership) throws MembershipCreationException {
-        int lines = membershipInsertionOrUpdate(membership, OperationType.INSERT);
-        if (lines == 0) throw new MembershipCreationException("L'adhésion n'a pas pu être créée");
-        return true;
-    }
-
-    // Read
     public MembershipModel fillMembership(ResultSet rs) throws SQLException {
         MembershipModel membership = new MembershipModel();
         membership.setRegistrationDate(rs.getTimestamp("registrationDate").toLocalDateTime());
@@ -69,9 +64,9 @@ public class MembershipDBAccess implements MembershipDataAccess {
             return memberships;
 
         } catch (SQLException e) {
-            throw new MembershipSearchException(e.getMessage());
+            throw new MembershipSearchException("Erreur lors de la recherche des adhésions: " + e.getMessage());
         } catch (ConnectionDataAccessException e) {
-            throw new RuntimeException(e);
+            throw new MembershipSearchException("Erreur de connexion lors de la recherche des adhésions: " + e.getMessage());
         }
     }
 
@@ -92,9 +87,9 @@ public class MembershipDBAccess implements MembershipDataAccess {
             return memberships;
 
         } catch (SQLException e) {
-            throw new MembershipSearchException(e.getMessage());
+            throw new MembershipSearchException("Erreur lors de la recherche des adhésions du joueur: " + e.getMessage());
         } catch (ConnectionDataAccessException e) {
-            throw new RuntimeException(e);
+            throw new MembershipSearchException("Erreur de connexion lors de la recherche des adhésions du joueur: " + e.getMessage());
         }
     }
 
@@ -115,9 +110,9 @@ public class MembershipDBAccess implements MembershipDataAccess {
             return memberships;
 
         } catch (SQLException e) {
-            throw new MembershipSearchException(e.getMessage());
+            throw new MembershipSearchException("Erreur lors de la recherche des adhésions du club: " + e.getMessage());
         } catch (ConnectionDataAccessException e) {
-            throw new RuntimeException(e);
+            throw new MembershipSearchException("Erreur de connexion lors de la recherche des adhésions du club: " + e.getMessage());
         }
     }
 }

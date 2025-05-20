@@ -9,15 +9,15 @@ import java.util.*;
 public class PlayerController {
     private PlayerManager playerManager;
 
-    public PlayerController() throws ConnectionDataAccessException {
+    public PlayerController() {
         playerManager = new PlayerManager();
     }
 
-    public Boolean createPlayer(PlayerModel player) throws PlayerCreationException {
+    public Boolean createPlayer(PlayerModel player) throws PlayerCreationException, ValidationException {
         return playerManager.createPlayer(player);
     }
 
-    public Boolean updatePlayer(PlayerModel player) throws PlayerCreationException, PlayerUpdateException {
+    public Boolean updatePlayer(PlayerModel player) throws PlayerUpdateException, ValidationException {
         return playerManager.updatePlayer(player);
     }
 
@@ -25,8 +25,8 @@ public class PlayerController {
         return playerManager.getAllPlayers();
     }
 
-    public PlayerModel getPlayerById(int playerId) throws PlayerSearchException {
-        return playerManager.getPlayerById(playerId);
+    public PlayerModel getPlayerById(int id) throws PlayerSearchException {
+        return playerManager.getPlayerById(id);
     }
 
     public List<PlayerModel> getPlayersByFullName(String firstName, String lastName) throws PlayerSearchException {
