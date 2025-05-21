@@ -5,6 +5,12 @@
     <content url="file://$MODULE_DIR$">
       <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
       <excludeFolder url="file://$MODULE_DIR$/src/AncienProjet" />
+      <excludeFolder url="file://$MODULE_DIR$/src/exceptionPackage" />
+      <excludeFolder url="file://$MODULE_DIR$/src/dataAccessPackage" />
+      <excludeFolder url="file://$MODULE_DIR$/src/controllerPackage" />
+      <excludeFolder url="file://$MODULE_DIR$/src/businessPackage" />
+      <excludeFolder url="file://$MODULE_DIR$/src/viewPackage" />
+      <excludeFolder url="file://$MODULE_DIR$/src/utilPackage" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
