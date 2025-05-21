@@ -1,24 +1,25 @@
 package main.modelPackage;
 
 public class CourtModel {
-    private Integer id;
+    private Integer courtId;
     private String state;
     private Boolean isOutdoor;
-    private ClubModel clubModel;
+    private Integer clubId;
 
-    public CourtModel(String state, Boolean isOutdoor, ClubModel clubModel) {
-
-        this.state = state;
-        this.isOutdoor = isOutdoor;
-        this.clubModel = clubModel;
+    public CourtModel(String state, Boolean isOutdoor, Integer clubId) {
+        setState(state);
+        setOutdoor(isOutdoor);
+        setClub(clubId);
     }
 
-    public int getId() {
-        return id;
+    public CourtModel() {}
+
+    public int getCourtId() {
+        return courtId;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setCourtId(int courtId) {
+        this.courtId = courtId;
     }
 
     public String getState() {
@@ -37,11 +38,11 @@ public class CourtModel {
         isOutdoor = outdoor;
     }
 
-    public ClubModel getClub() {
-        return clubModel;
+    public Integer getClub() {
+        return clubId;
     }
 
-    public void setClub(ClubModel clubModel) {
-        this.clubModel = clubModel;
+    public void setClub(Integer clubId) {
+        this.clubId = clubId;
     }
 }
