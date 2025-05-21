@@ -14,6 +14,8 @@ public class GameModel {
         setEndTime(endTime);
     }
 
+    public GameModel() {}
+
     public Integer getGameID() {
         return gameId;
     }
