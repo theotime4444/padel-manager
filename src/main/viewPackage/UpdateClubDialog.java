@@ -240,4 +240,4 @@ public class UpdateClubDialog extends JDialog implements ActionListener {
             return this;
         }
     }
-} 
+}

@@ -11,6 +11,11 @@ import main.exceptionPackage.ConnectionDataAccessException;
 import main.exceptionPackage.PlayerSearchException;
 import main.modelPackage.PlayerModel;
 import main.modelPackage.NonEditableTableModel;
+import main.modelPackage.ClubModel;
+import main.modelPackage.LocalityModel;
+import main.exceptionPackage.ClubSearchException;
+import main.exceptionPackage.ValidationException;
+import main.exceptionPackage.LocalitySearchException;
 
 public class ResearchPlayer extends JPanel implements ActionListener {
     private MainWindow mainWindow;
@@ -39,28 +44,29 @@ public class ResearchPlayer extends JPanel implements ActionListener {
 
         playerController = new PlayerController();
 
+        // Last name field
+        JLabel lastNameLabel = new JLabel("Nom :");
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        add(lastNameLabel, gbc);
+
+        lastNameField = new JTextField(20);
+        gbc.gridx = 1;
+        gbc.gridy = 1;
+        add(lastNameField, gbc);
+
         // First name field
         JLabel firstNameLabel = new JLabel("Prénom :");
         gbc.gridx = 0;
-        gbc.gridy = 1;
+        gbc.gridy = 2;
         gbc.gridwidth = 1;
         add(firstNameLabel, gbc);
 
         firstNameField = new JTextField(20);
         gbc.gridx = 1;
-        gbc.gridy = 1;
+        gbc.gridy = 2;
         add(firstNameField, gbc);
 
-        // Last name field
-        JLabel lastNameLabel = new JLabel("Nom :");
-        gbc.gridx = 0;
-        gbc.gridy = 2;
-        add(lastNameLabel, gbc);
-
-        lastNameField = new JTextField(20);
-        gbc.gridx = 1;
-        gbc.gridy = 2;
-        add(lastNameField, gbc);
 
         submitButton = new JButton("Rechercher");
         gbc.gridx = 0;
@@ -70,7 +76,7 @@ public class ResearchPlayer extends JPanel implements ActionListener {
         add(submitButton, gbc);
         submitButton.addActionListener(this);
 
-        String[] columnNames = {"Nom", "Prénom", "Points ELO", "Pro"};
+        String[] columnNames = {"Nom", "Prénom", "Points ELO", "Pro", "Club", "Ville", "Région", "Pays"};
         tableModel = new NonEditableTableModel(columnNames, 0);
         JTable table = new JTable(tableModel);
         JScrollPane scrollPane = new JScrollPane(table);
@@ -93,29 +99,43 @@ public class ResearchPlayer extends JPanel implements ActionListener {
             String lastName = lastNameField.getText().trim();
 
             if (firstName.isEmpty() || lastName.isEmpty()) {
-                mainWindow.displayError("Veuillez remplir les deux champs.");
+                JOptionPane.showMessageDialog(this, "Veuillez remplir les deux champs.", "Attention", JOptionPane.WARNING_MESSAGE);
                 return;
             }
 
             resetRows();
-            List<PlayerModel> players = playerController.getPlayersByFullName(firstName, lastName);
+            List<PlayerDisplayData> playerInfos = playerController.getPlayersWithDetailsByFullName(firstName, lastName);
 
-            for (PlayerModel player : players) {
+            for (PlayerDisplayData info : playerInfos) {
+                PlayerModel p = info.player;
+                ClubModel club = info.lastClub;
+                LocalityModel loc = info.locality;
+
                 Object[] data = {
-                    player.getLastname(),
-                    player.getFirstname(),
-                    player.getEloPoints(),
-                    player.getIsPro() ? "Oui" : "Non"
+                    p.getLastname(),
+                    p.getFirstname(),
+                    p.getEloPoints(),
+                    p.getIsPro() ? "Oui" : "Non",
+                    (club != null ? club.getName() : "—"),
+                    (loc != null ? loc.getCity() : "—"),
+                    (loc != null ? loc.getRegion() : "—"),
+                    (loc != null ? loc.getCountry() : "—")
                 };
                 tableModel.addRow(data);
             }
 
-            if (players.isEmpty()) {
-                mainWindow.displayMessage("Aucun joueur trouvé avec ce nom et prénom.", "");
+            if (playerInfos.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Aucun joueur trouvé avec ce nom et prénom.", "Information", JOptionPane.INFORMATION_MESSAGE);
             }
 
-        } catch (PlayerSearchException exception) {
-            mainWindow.displayError(exception.toString());
+        } catch (PlayerSearchException e) {
+            JOptionPane.showMessageDialog(this, e.getMessage(), "Erreur de recherche joueur", JOptionPane.ERROR_MESSAGE);
+        } catch (ClubSearchException e) {
+            JOptionPane.showMessageDialog(this, e.getMessage(), "Erreur de recherche club", JOptionPane.ERROR_MESSAGE);
+        } catch (ValidationException e) {
+            JOptionPane.showMessageDialog(this, e.getMessage(), "Attention", JOptionPane.WARNING_MESSAGE);
+        } catch (LocalitySearchException e) {
+            JOptionPane.showMessageDialog(this, e.getMessage(), "Erreur de recherche localité", JOptionPane.ERROR_MESSAGE);
         }
     }
 

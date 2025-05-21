@@ -96,7 +96,6 @@ public class ClubDBAccess implements ClubDataAccess {
         club.setLocalityID(rs.getInt("clubLocality"));
         club.setPhoneNumber(rs.getString("phoneNumber"));
         club.setCreationDate(rs.getDate("creationDate"));
-        club.setWebsite(rs.getString("website"));
         club.setIsBeginnersFriendly(rs.getBoolean("isBeginnersFriendly"));
         club.setInstagramProfile(rs.getString("instagramProfile"));
 

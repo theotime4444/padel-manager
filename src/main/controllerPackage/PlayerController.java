@@ -3,6 +3,7 @@ package main.controllerPackage;
 import main.exceptionPackage.*;
 import main.modelPackage.PlayerModel;
 import main.businessPackage.PlayerManager;
+import main.viewPackage.PlayerDisplayData;
 
 import java.util.*;
 
@@ -35,5 +36,10 @@ public class PlayerController {
 
     public Boolean deletePlayer(PlayerModel player) throws PlayerDeletionException {
         return playerManager.deletePlayer(player);
+    }
+
+    public List<PlayerDisplayData> getPlayersWithDetailsByFullName(String firstName, String lastName) 
+            throws PlayerSearchException, ClubSearchException, ValidationException, LocalitySearchException {
+        return playerManager.getPlayersWithDetailsByFullName(firstName, lastName);
     }
 }
