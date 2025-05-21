@@ -18,7 +18,8 @@ public class MenuBar implements ActionListener {
     private JMenuItem researchPlayer;
     private JMenuItem researchTournamentMatches;
     private JMenuItem researchPlayerRegion;
-    private JMenuItem thread;
+
+    private JMenuItem ballAnimation;
 
     public MenuBar(MainWindow mainWindow) {
         this.mainWindow = mainWindow;
@@ -70,10 +71,10 @@ public class MenuBar implements ActionListener {
         // Thread
         menuThread = new JMenu("Thread");
 
-        thread = new JMenuItem("Thread");
-        thread.addActionListener(this);
+        ballAnimation = new JMenuItem("Thread");
+        ballAnimation.addActionListener(this);
 
-        menuThread.add(thread);
+        menuThread.add(ballAnimation);
 
         // Bar
         menuBar = new JMenuBar();
@@ -102,7 +103,7 @@ public class MenuBar implements ActionListener {
             mainWindow.switchPanel(mainWindow.getResearchPlayerRegion());
         } else if (e.getSource() == exit) {
             mainWindow.exit();
-        } else if (e.getSource() == thread) {
+        } else if (e.getSource() == ballAnimation) {
             mainWindow.switchPanel(mainWindow.getThread());
         }
     }

@@ -20,7 +20,7 @@ public class MainWindow extends JFrame {
     private JPanel crudClub;
     private JPanel researchTournamentMatches;
     private JPanel researchPlayerRegion;
-    private JPanel thread;
+    private JPanel ballPanel;
 
     private MenuBar menuBar;
     private ConnectionDataAccessController connectionController;
@@ -42,7 +42,8 @@ public class MainWindow extends JFrame {
         researchTournamentMatches = new ResearchTournamentMatches(this);
         researchPlayerRegion = new ResearchPlayerRegion(this);
         // Tread
-        //thread = new Thread(this);
+        ballPanel = new BallPanel();
+
 
         menuBar = new MenuBar(this);
 
@@ -105,7 +106,7 @@ public class MainWindow extends JFrame {
     }
 
     public JPanel getThread() {
-        return thread;
+        return ballPanel;
     }
     
     
