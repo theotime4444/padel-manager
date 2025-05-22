@@ -82,7 +82,7 @@ public class CrudPlayer extends JPanel implements ActionListener {
             
             for (PlayerModel player : players) {
                 Object[] data = {
-                    player.getPlayerID(),
+                    player.getPlayerId(),
                     player.getLastname(),
                     player.getFirstname(),
                     player.getBirthdayDate(),
@@ -91,7 +91,7 @@ public class CrudPlayer extends JPanel implements ActionListener {
                     player.getPhoneNumber(),
                     player.getEmail(),
                     player.getIsPro() ? "Oui" : "Non",
-                    player.getLocality(),
+                    player.getLocalityId(),
                     player.getInstagramProfile()
                 };
                 tableModel.addRow(data);
@@ -157,7 +157,7 @@ public class CrudPlayer extends JPanel implements ActionListener {
                 for (int row : selectedRows) {
                     int playerId = (int) tableModel.getValueAt(row, 0);
                     PlayerModel player = new PlayerModel();
-                    player.setPlayerID(playerId);
+                    player.setPlayerId(playerId);
 
                     try {
                         if (!playerController.deletePlayer(player)) {

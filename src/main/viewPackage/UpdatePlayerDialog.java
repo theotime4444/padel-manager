@@ -185,7 +185,7 @@ public class UpdatePlayerDialog extends JDialog implements ActionListener {
             List<LocalityModel> localities = localityController.getAllLocalities();
             for (LocalityModel locality : localities) {
                 localityComboBox.addItem(locality);
-                if (locality.getLocalityID().equals(currentPlayer.getLocality())) {
+                if (locality.getLocalityId().equals(currentPlayer.getLocalityId())) {
                     localityComboBox.setSelectedItem(locality);
                 }
             }
@@ -233,7 +233,7 @@ public class UpdatePlayerDialog extends JDialog implements ActionListener {
                 
                 LocalityModel selectedLocality = (LocalityModel) localityComboBox.getSelectedItem();
                 if (selectedLocality != null) {
-                    currentPlayer.setLocality(selectedLocality.getLocalityID());
+                    currentPlayer.setLocalityId(selectedLocality.getLocalityId());
                 }
 
                 // Save player

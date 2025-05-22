@@ -9,16 +9,16 @@ public class CourtModel {
     public CourtModel(String state, Boolean isOutdoor, Integer clubId) {
         setState(state);
         setOutdoor(isOutdoor);
-        setClub(clubId);
+        setClubId(clubId);
     }
 
     public CourtModel() {}
 
-    public int getCourtId() {
+    public Integer getCourtId() {
         return courtId;
     }
 
-    public void setCourtId(int courtId) {
+    public void setCourtId(Integer courtId) {
         this.courtId = courtId;
     }
 
@@ -38,11 +38,11 @@ public class CourtModel {
         isOutdoor = outdoor;
     }
 
-    public Integer getClub() {
+    public Integer getClubId() {
         return clubId;
     }
 
-    public void setClub(Integer clubId) {
+    public void setClubId(Integer clubId) {
         this.clubId = clubId;
     }
 }

@@ -4,40 +4,40 @@ import java.time.LocalDateTime;
 public class GameModel {
 
     private Integer gameId;
-    private LocalDateTime startTime;
-    private LocalDateTime endTime;
+    private LocalDateTime startingDateHour;
+    private LocalDateTime endingDateHour;
     private Integer courtId;
     private Integer tournementId;
 
-    public GameModel(LocalDateTime startTime, LocalDateTime endTime) {
-        setStartTime(startTime);
-        setEndTime(endTime);
+    public GameModel(LocalDateTime startingDateHour, LocalDateTime endingDateHour) {
+        setStartingDateHour(startingDateHour);
+        setEndingDateHour(endingDateHour);
     }
 
     public GameModel() {}
 
-    public Integer getGameID() {
+    public Integer getGameId() {
         return gameId;
     }
 
-    public void setgameId(Integer gameId) {
+    public void setGameId(Integer gameId) {
         this.gameId = gameId;
     }
 
-    public LocalDateTime getStartTime() {
-        return startTime;
+    public LocalDateTime getStartingDateHour() {
+        return startingDateHour;
     }
 
-    public void setStartTime(LocalDateTime startTime) {
-        this.startTime = startTime;
+    public void setStartingDateHour(LocalDateTime startingDateHour) {
+        this.startingDateHour = startingDateHour;
     }
 
-    public LocalDateTime getEndTime() {
-        return endTime;
+    public LocalDateTime getEndingDateHour() {
+        return endingDateHour;
     }
 
-    public void setEndTime(LocalDateTime endTime) {
-        this.endTime = endTime;
+    public void setEndingDateHour(LocalDateTime endingDateHour) {
+        this.endingDateHour = endingDateHour;
     }
 
     public Integer getCourtId() {
@@ -48,11 +48,11 @@ public class GameModel {
         this.courtId = courtId;
     }
 
-    public Integer getTournement() {
+    public Integer getTournamentId() {
         return tournementId;
     }
 
-    public void settournementId(Integer tournementId) {
-        this.tournementId = tournementId;
+    public void setTournamentId(Integer tournamentId) {
+        this.tournementId = tournamentId;
     }
 }

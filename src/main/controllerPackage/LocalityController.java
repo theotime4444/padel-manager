@@ -20,4 +20,8 @@ public class LocalityController {
     public List<LocalityModel> getAllLocalities() throws LocalitySearchException {
         return localityManager.getAllLocalities();
     }
+
+    public List<String> getAllRegions() throws LocalitySearchException {
+        return localityManager.getAllRegions();
+    }
 } 

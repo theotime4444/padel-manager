@@ -11,16 +11,16 @@ public class CourtDBAccess implements CourtDataAccess {
 
     public CourtModel fillCourt(ResultSet rs) throws SQLException {
         CourtModel court = new CourtModel();
-        court.setCourtId(rs.getInt("CourtID"));
-        court.setState(rs.getString("State"));
-        court.setOutdoor(rs.getBoolean("Outdoor"));
-        court.setClub(rs.getInt("Club"));
+        court.setCourtId(rs.getInt("courtId"));
+        court.setState(rs.getString("state"));
+        court.setOutdoor(rs.getBoolean("isOutdoor"));
+        court.setClubId(rs.getInt("clubId"));
 
         return court;
     }
 
     public CourtModel getCourtById(int id) throws CourtSearchException {
-        String query = "SELECT * FROM Court WHERE idCourt = ?";
+        String query = "SELECT * FROM Court WHERE courtId = ?";
 
         try {
             Connection connection = ConnectionDataAccess.getInstance();

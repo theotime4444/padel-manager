@@ -1,7 +1,7 @@
 package main.modelPackage;
 
 public class LocalityModel {
-    private Integer localityID;
+    private Integer localityId;
     private String country;
     private String region;
     private String city;
@@ -14,12 +14,12 @@ public class LocalityModel {
 
     public LocalityModel() {}
 
-    public Integer getLocalityID() {
-        return localityID;
+    public Integer getLocalityId() {
+        return localityId;
     }
 
-    public void setLocalityID(Integer localityID) {
-        this.localityID = localityID;
+    public void setLocalityId(Integer localityId) {
+        this.localityId = localityId;
     }
 
     public String getCountry() {

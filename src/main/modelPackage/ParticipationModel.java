@@ -5,10 +5,9 @@ public class ParticipationModel {
     private Integer playerId;
     private Integer gameId;
     private int score;
+    private int teamNbr;
 
-    public ParticipationModel(int score) {
-        this.score = score;
-    }
+    public ParticipationModel() {}
 
     public Integer getPlayerId() {
         return playerId;
@@ -34,4 +33,11 @@ public class ParticipationModel {
         this.score = score;
     }
 
+    public int getTeamNbr() {
+        return teamNbr;
+    }
+
+    public void setTeamNbr(int teamNbr) {
+        this.teamNbr = teamNbr;
+    }
 }

@@ -64,9 +64,9 @@ public class ReadPlayerDialog extends JDialog {
 
             // Get locality information
             String localityInfo = "Non spécifiée";
-            if (player.getLocality() != null) {
+            if (player.getLocalityId() != null) {
                 try {
-                    LocalityModel locality = localityController.getLocalityById(player.getLocality());
+                    LocalityModel locality = localityController.getLocalityById(player.getLocalityId());
                     if (locality != null) {
                         localityInfo = locality.getCity() + " (" + locality.getRegion() + ")";
                     } else {
@@ -79,7 +79,7 @@ public class ReadPlayerDialog extends JDialog {
             }
 
             // Add player information
-            addInfoRow(contentPanel, gbc, "ID:", String.valueOf(player.getPlayerID()), 0);
+            addInfoRow(contentPanel, gbc, "ID:", String.valueOf(player.getPlayerId()), 0);
             addInfoRow(contentPanel, gbc, "Nom:", player.getLastname(), 1);
             addInfoRow(contentPanel, gbc, "Prénom:", player.getFirstname(), 2);
             addInfoRow(contentPanel, gbc, "Date de naissance:", formattedDate, 3);

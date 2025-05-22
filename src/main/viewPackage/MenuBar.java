@@ -11,6 +11,7 @@ public class MenuBar implements ActionListener {
     private JMenu menuPlayers;
     private JMenu menuSearch;
     private JMenu menuThread;
+    private JMenu menuBusiness;
     private JMenuItem home;
     private JMenuItem exit;
     private JMenuItem crudPlayer;
@@ -18,8 +19,9 @@ public class MenuBar implements ActionListener {
     private JMenuItem researchPlayer;
     private JMenuItem researchTournamentMatches;
     private JMenuItem researchPlayerRegion;
-
-    private JMenuItem ballAnimation;
+    private JMenuItem threadBallAnimation;
+    private JMenuItem businessStatPlayer;
+    private JMenuItem businessFindPlayer;
 
     public MenuBar(MainWindow mainWindow) {
         this.mainWindow = mainWindow;
@@ -56,10 +58,10 @@ public class MenuBar implements ActionListener {
         researchPlayer = new JMenuItem("Afficher information de joueurs");
         researchPlayer.addActionListener(this);
 
-        researchTournamentMatches = new JMenuItem("Afficher les matchs d’un tournoi");
+        researchTournamentMatches = new JMenuItem("Afficher les matchs d'un tournoi");
         researchTournamentMatches.addActionListener(this);
 
-        researchPlayerRegion = new JMenuItem("Recherche joueurs selon “region” et affichage en ordre décroissant sur la valeur de “elopoint”");
+        researchPlayerRegion = new JMenuItem("Recherche joueurs selon \"region\" et affichage en ordre décroissant sur la valeur de \"elopoint\"");
         researchPlayerRegion.addActionListener(this);
 
         menuSearch.add(researchPlayer);
@@ -68,13 +70,26 @@ public class MenuBar implements ActionListener {
         menuSearch.addSeparator();
         menuSearch.add(researchPlayerRegion);
 
+        // Business
+        menuBusiness = new JMenu("Business");
+
+        businessStatPlayer = new JMenuItem("Statistiques du joueur");
+        businessStatPlayer.addActionListener(this);
+
+        businessFindPlayer = new JMenuItem("Suggestion de partenaires");
+        businessFindPlayer.addActionListener(this);
+
+        menuBusiness.add(businessStatPlayer);
+        menuBusiness.addSeparator();
+        menuBusiness.add(businessFindPlayer);
+
         // Thread
         menuThread = new JMenu("Thread");
 
-        ballAnimation = new JMenuItem("Thread");
-        ballAnimation.addActionListener(this);
+        threadBallAnimation = new JMenuItem("Animation de balle");
+        threadBallAnimation.addActionListener(this);
 
-        menuThread.add(ballAnimation);
+        menuThread.add(threadBallAnimation);
 
         // Bar
         menuBar = new JMenuBar();
@@ -82,7 +97,8 @@ public class MenuBar implements ActionListener {
         menuBar.add(menuMain);
         menuBar.add(menuPlayers);
         menuBar.add(menuSearch);
-
+        menuBar.add(menuBusiness);
+        menuBar.add(menuThread);
         // Ajout de la barre de menu à la fenêtre principale
         this.mainWindow.setJMenuBar(menuBar);
     }
@@ -101,10 +117,14 @@ public class MenuBar implements ActionListener {
             mainWindow.switchPanel(mainWindow.getResearchTournamentMatches());
         } else if (e.getSource() == researchPlayerRegion) {
             mainWindow.switchPanel(mainWindow.getResearchPlayerRegion());
+        } else if (e.getSource() == businessStatPlayer) {
+            mainWindow.switchPanel(mainWindow.getBusinessStatPlayer());
+        } else if (e.getSource() == businessFindPlayer) {
+            mainWindow.switchPanel(mainWindow.getBusinessFindPlayer());
+        } else if (e.getSource() == threadBallAnimation) {
+            mainWindow.switchPanel(mainWindow.getThreadBallAnimation());
         } else if (e.getSource() == exit) {
             mainWindow.exit();
-        } else if (e.getSource() == ballAnimation) {
-            mainWindow.switchPanel(mainWindow.getThread());
         }
     }
 } 

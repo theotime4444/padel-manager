@@ -176,7 +176,7 @@ public class CreateClubDialog extends JDialog implements ActionListener {
                 
                 LocalityModel selectedLocality = (LocalityModel) localityComboBox.getSelectedItem();
                 if (selectedLocality != null) {
-                    club.setLocalityID(selectedLocality.getLocalityID());
+                    club.setLocalityId(selectedLocality.getLocalityId());
                 }
 
                 // Save club

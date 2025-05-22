@@ -7,23 +7,23 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
 import main.controllerPackage.PlayerController;
-import main.exceptionPackage.ConnectionDataAccessException;
-import main.exceptionPackage.PlayerSearchException;
-import main.modelPackage.PlayerModel;
+import main.controllerPackage.LocalityController;
+import main.exceptionPackage.*;
+import main.modelPackage.*;
 import main.modelPackage.NonEditableTableModel;
 
 public class ResearchPlayerRegion extends JPanel implements ActionListener {
     private MainWindow mainWindow;
-    private JTextField firstNameField;
-    private JTextField lastNameField;
+    private JComboBox<String> regionComboBox;
     private JButton submitButton;
     private PlayerController playerController;
+    private LocalityController localityController;
     private DefaultTableModel tableModel;
 
     public ResearchPlayerRegion(MainWindow mainWindow) throws ConnectionDataAccessException {
         this.mainWindow = mainWindow;
 
-        JLabel title = new JLabel("Rechercher un joueur par nom et prénom :");
+        JLabel title = new JLabel("Rechercher les joueurs par région :");
         title.setFont(new Font("Arial", Font.BOLD, 16));
         title.setHorizontalAlignment(SwingConstants.CENTER);
 
@@ -38,44 +38,39 @@ public class ResearchPlayerRegion extends JPanel implements ActionListener {
         add(title, gbc);
 
         playerController = new PlayerController();
+        localityController = new LocalityController();
 
-        // First name field
-        JLabel firstNameLabel = new JLabel("Prénom :");
+        // Region ComboBox
+        JLabel regionLabel = new JLabel("Région :");
         gbc.gridx = 0;
         gbc.gridy = 1;
         gbc.gridwidth = 1;
-        add(firstNameLabel, gbc);
+        add(regionLabel, gbc);
 
-        firstNameField = new JTextField(20);
-        gbc.gridx = 1;
-        gbc.gridy = 1;
-        add(firstNameField, gbc);
-
-        // Last name field
-        JLabel lastNameLabel = new JLabel("Nom :");
-        gbc.gridx = 0;
-        gbc.gridy = 2;
-        add(lastNameLabel, gbc);
-
-        lastNameField = new JTextField(20);
-        gbc.gridx = 1;
-        gbc.gridy = 2;
-        add(lastNameField, gbc);
+        try {
+            List<String> regions = localityController.getAllRegions();
+            regionComboBox = new JComboBox<>(regions.toArray(new String[0]));
+            gbc.gridx = 1;
+            gbc.gridy = 1;
+            add(regionComboBox, gbc);
+        } catch (LocalitySearchException e) {
+            mainWindow.displayError("Erreur lors du chargement des régions : " + e.getMessage());
+        }
 
         submitButton = new JButton("Rechercher");
         gbc.gridx = 0;
-        gbc.gridy = 3;
+        gbc.gridy = 2;
         gbc.gridwidth = 2;
         gbc.anchor = GridBagConstraints.CENTER;
         add(submitButton, gbc);
         submitButton.addActionListener(this);
 
-        String[] columnNames = {"Nom", "Prénom", "Points ELO", "Pro"};
+        String[] columnNames = {"Prénom", "Nom", "Points ELO", "Club", "Ville"};
         tableModel = new NonEditableTableModel(columnNames, 0);
         JTable table = new JTable(tableModel);
         JScrollPane scrollPane = new JScrollPane(table);
         gbc.gridx = 0;
-        gbc.gridy = 4;
+        gbc.gridy = 3;
         gbc.gridwidth = 2;
         gbc.fill = GridBagConstraints.BOTH;
         gbc.weightx = 1.0;
@@ -89,33 +84,32 @@ public class ResearchPlayerRegion extends JPanel implements ActionListener {
 
     private void submit() {
         try {
-            String firstName = firstNameField.getText().trim();
-            String lastName = lastNameField.getText().trim();
-
-            if (firstName.isEmpty() || lastName.isEmpty()) {
-                mainWindow.displayError("Veuillez remplir les deux champs.");
+            String selectedRegion = (String) regionComboBox.getSelectedItem();
+            if (selectedRegion == null || selectedRegion.isEmpty()) {
+                mainWindow.displayError("Veuillez sélectionner une région.");
                 return;
             }
 
             resetRows();
-            List<PlayerModel> players = playerController.getPlayersByFullName(firstName, lastName);
+            List<PlayerDisplayData> players = playerController.getPlayersWithDetailsByRegion(selectedRegion);
 
-            for (PlayerModel player : players) {
-                Object[] data = {
-                        player.getLastname(),
-                        player.getFirstname(),
-                        player.getEloPoints(),
-                        player.getIsPro() ? "Oui" : "Non"
+            for (PlayerDisplayData data : players) {
+                Object[] row = {
+                    data.player.getFirstname(),
+                    data.player.getLastname(),
+                    data.player.getEloPoints(),
+                    data.lastClub != null ? data.lastClub.getName() : "—",
+                    data.locality != null ? data.locality.getCity() : "—"
                 };
-                tableModel.addRow(data);
+                tableModel.addRow(row);
             }
 
             if (players.isEmpty()) {
-                mainWindow.displayMessage("Aucun joueur trouvé avec ce nom et prénom.", "");
+                mainWindow.displayMessage("Aucun joueur trouvé dans cette région.", "Information");
             }
 
-        } catch (PlayerSearchException exception) {
-            mainWindow.displayError(exception.toString());
+        } catch (PlayerSearchException | ClubSearchException | ValidationException | LocalitySearchException e) {
+            mainWindow.displayError(e.getMessage());
         }
     }
 

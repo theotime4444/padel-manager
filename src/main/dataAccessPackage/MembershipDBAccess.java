@@ -10,8 +10,8 @@ public class MembershipDBAccess implements MembershipDataAccess {
     public MembershipDBAccess() {}
 
     public int membershipInsertionOrUpdate(MembershipModel membership, OperationType operationType) throws SQLException, ConnectionDataAccessException {
-        String insertionQuery = "INSERT INTO Membership (registrationDate, Club, Player) VALUES (?, ?, ?)";
-        String updateQuery = "UPDATE Membership SET registrationDate = ?, Club = ?, Player = ? WHERE registrationDate = ? AND Club = ? AND Player = ?";
+        String insertionQuery = "INSERT INTO Membership (registrationDate, clubId, playerId) VALUES (?, ?, ?)";
+        String updateQuery = "UPDATE Membership SET registrationDate = ?, clubId = ?, playerId = ? WHERE registrationDate = ? AND clubId = ? AND playerId = ?";
 
         Connection connection = ConnectionDataAccess.getInstance();
         PreparedStatement statement;
@@ -43,8 +43,8 @@ public class MembershipDBAccess implements MembershipDataAccess {
     public MembershipModel fillMembership(ResultSet rs) throws SQLException {
         MembershipModel membership = new MembershipModel();
         membership.setRegistrationDate(rs.getTimestamp("registrationDate").toLocalDateTime());
-        membership.setClubId(rs.getInt("Club"));
-        membership.setPlayerId(rs.getInt("Player"));
+        membership.setClubId(rs.getInt("clubId"));
+        membership.setPlayerId(rs.getInt("playerId"));
         return membership;
     }
 
@@ -71,7 +71,7 @@ public class MembershipDBAccess implements MembershipDataAccess {
     }
 
     public List<MembershipModel> getMembershipsByPlayerId(int playerId) throws MembershipSearchException {
-        String query = "SELECT * FROM Membership WHERE Player = ?";
+        String query = "SELECT * FROM Membership WHERE playerId = ?";
 
         try {
             Connection connection = ConnectionDataAccess.getInstance();
@@ -94,7 +94,7 @@ public class MembershipDBAccess implements MembershipDataAccess {
     }
 
     public List<MembershipModel> getMembershipsByClubId(int clubId) throws MembershipSearchException {
-        String query = "SELECT * FROM Membership WHERE Club = ?";
+        String query = "SELECT * FROM Membership WHERE clubId = ?";
 
         try {
             Connection connection = ConnectionDataAccess.getInstance();

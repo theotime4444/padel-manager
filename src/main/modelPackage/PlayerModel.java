@@ -5,7 +5,7 @@ import java.util.Date;
 
 public class PlayerModel {
 
-    private Integer playerID;
+    private Integer playerId;
     private String lastname;
     private String firstname;
     private Date birthdayDate;
@@ -14,12 +14,12 @@ public class PlayerModel {
     private String phoneNumber;
     private String email;
     private boolean isPro;
-    private Integer locality;
+    private Integer localityId;
     private String instagramProfile;
 
-    public PlayerModel(Integer playerID, String lastname, String firstname, Date birthdayDate,
-                       char gender, int eloPoints, String phoneNumber, String email, boolean isPro, Integer locality, String instagramProfile) {
-        setPlayerID(playerID);
+    public PlayerModel(Integer playerId, String lastname, String firstname, Date birthdayDate,
+                       char gender, int eloPoints, String phoneNumber, String email, boolean isPro, Integer localityId, String instagramProfile) {
+        setPlayerId(playerId);
         setLastname(lastname);
         setFirstname(firstname);
         setBirthdayDate(birthdayDate);
@@ -28,17 +28,17 @@ public class PlayerModel {
         setPhoneNumber(phoneNumber);
         setEmail(email);
         setIsPro(isPro);
-        setLocality(locality);
+        setLocalityId(localityId);
         setInstagramProfile(instagramProfile);
     }
 
     public PlayerModel() {}
 
-    public Integer getPlayerID() {
-        return playerID;
+    public Integer getPlayerId() {
+        return playerId;
     }
-    public void setPlayerID(Integer playerID) {
-        this.playerID = playerID;
+    public void setPlayerId(Integer playerId) {
+        this.playerId = playerId;
     }
 
     public String getLastname() {
@@ -97,11 +97,11 @@ public class PlayerModel {
         this.isPro = isPro;
     }
 
-    public Integer getLocality() {
-        return locality;
+    public Integer getLocalityId() {
+        return localityId;
     }
-    public void setLocality(Integer locality) {
-        this.locality = locality;
+    public void setLocalityId(Integer localityId) {
+        this.localityId = localityId;
     }
 
     public String getInstagramProfile() {

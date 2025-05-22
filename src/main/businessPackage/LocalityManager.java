@@ -21,4 +21,8 @@ public class LocalityManager {
     public List<LocalityModel> getAllLocalities() throws LocalitySearchException {
         return localityDataAccess.getAllLocalities();
     }
+
+    public List<String> getAllRegions() throws LocalitySearchException {
+        return localityDataAccess.getAllRegions();
+    }
 } 

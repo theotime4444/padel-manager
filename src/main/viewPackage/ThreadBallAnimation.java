@@ -3,21 +3,21 @@ package main.viewPackage;
 import javax.swing.*;
 import java.awt.*;
 
-public class BallPanel extends JPanel {
+public class ThreadBallAnimation extends JPanel {
     private int ballX = 0;
     private int ballY = 100;
     private int ballDiameter = 30;
 
     private boolean movingRight = true;
 
-    private BallThread ballThread;
+    private ThreadBall threadBall;
 
-    public BallPanel() {
+    public ThreadBallAnimation() {
         setPreferredSize(new Dimension(600, 300));
         setBackground(Color.WHITE);
 
-        ballThread = new BallThread(this);
-        ballThread.start();
+        threadBall = new ThreadBall(this);
+        threadBall.start();
     }
 
     public void updateBallPosition() {

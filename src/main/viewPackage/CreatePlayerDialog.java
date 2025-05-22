@@ -207,7 +207,7 @@ public class CreatePlayerDialog extends JDialog implements ActionListener {
                 
                 LocalityModel selectedLocality = (LocalityModel) localityComboBox.getSelectedItem();
                 if (selectedLocality != null) {
-                    player.setLocality(selectedLocality.getLocalityID());
+                    player.setLocalityId(selectedLocality.getLocalityId());
                 }
 
                 // Save player

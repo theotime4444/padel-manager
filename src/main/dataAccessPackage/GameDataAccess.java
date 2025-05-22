@@ -10,5 +10,5 @@ public interface GameDataAccess {
     public Boolean updateGame(GameModel game) throws GameUpdateException;
     public GameModel getGameById(int id) throws GameSearchException;
     public Boolean deleteGame(GameModel game) throws GameDeletionException;
-
+    List<GameModel> getGamesByTournamentId(int tournamentId) throws GameSearchException;
 }

@@ -1,10 +1,10 @@
 package main.viewPackage;
 
-public class BallThread extends Thread {
-    private BallPanel panel;
+public class ThreadBall extends Thread {
+    private ThreadBallAnimation panel;
     private static final int FRAME_RATE = 30;
 
-    public BallThread(BallPanel panel) {
+    public ThreadBall(ThreadBallAnimation panel) {
         this.panel = panel;
     }
 

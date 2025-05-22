@@ -12,11 +12,11 @@ public class ClubDBAccess implements ClubDataAccess {
 
     public int clubInsertionOrUpdate(ClubModel club, OperationType operationType) throws SQLException, ConnectionDataAccessException {
 
-        String insertionQuery = "INSERT INTO Club (name, streetAddress, clubLocality, phoneNumber, creationDate, website, isBeginnersFriendly, instagramProfile) " +
+        String insertionQuery = "INSERT INTO Club (name, streetAddress, localityId, phoneNumber, creationDate, website, isBeginnersFriendly, instagramProfile) " +
                 "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
-        String updateQuery = "UPDATE Club SET name = ?, streetAddress = ?, clubLocality = ?, phoneNumber = ?, " +
-                "creationDate = ?, website = ?, isBeginnersFriendly = ?, instagramProfile = ? WHERE idClub = ?";
+        String updateQuery = "UPDATE Club SET name = ?, streetAddress = ?, localityId = ?, phoneNumber = ?, " +
+                "creationDate = ?, website = ?, isBeginnersFriendly = ?, instagramProfile = ? WHERE clubId = ?";
 
         Connection connection = ConnectionDataAccess.getInstance();
         PreparedStatement statement;
@@ -29,7 +29,7 @@ public class ClubDBAccess implements ClubDataAccess {
 
         statement.setString(1, club.getName());
         statement.setString(2, club.getStreetAddress());
-        statement.setInt(3, club.getLocalityID());
+        statement.setInt(3, club.getLocalityId());
         statement.setString(4, club.getPhoneNumber());
         statement.setDate(5, new java.sql.Date(club.getCreationDate().getTime()));
 
@@ -44,25 +44,22 @@ public class ClubDBAccess implements ClubDataAccess {
         statement.setString(8, club.getInstagramProfile());
 
         if (operationType == OperationType.UPDATE) {
-            // Pour update, on ajoute le player_id en 9e paramètre
-            statement.setInt(9, club.getId());
+            statement.setInt(9, club.getClubId());
         }
 
         int rowsAffected = statement.executeUpdate();
 
-        // Récupération de l'ID si on a fait un INSERT
         if (operationType == OperationType.INSERT) {
             ResultSet rs = statement.getGeneratedKeys();
             if (rs.next()) {
                 int generatedId = rs.getInt(1);
-                club.setId(generatedId); // Mets à jour ton ClubModel avec l'ID
+                club.setClubId(generatedId);
             }
         }
 
         return rowsAffected;
     }
 
-    //Create
     public Boolean createClub(ClubModel club) throws ClubCreationException {
         try {
             int rowsAffected = clubInsertionOrUpdate(club, OperationType.INSERT);
@@ -74,7 +71,6 @@ public class ClubDBAccess implements ClubDataAccess {
         }
     }
 
-    //Update
     public Boolean updateClub(ClubModel club) throws ClubUpdateException {
         try {
             int rowsAffected = clubInsertionOrUpdate(club, OperationType.UPDATE);
@@ -86,14 +82,13 @@ public class ClubDBAccess implements ClubDataAccess {
         }
     }
 
-    //Read
     public ClubModel fillClub(ResultSet rs) throws SQLException {
 
         ClubModel club = new ClubModel();
-        club.setId(rs.getInt("idClub"));
+        club.setClubId(rs.getInt("clubId"));
         club.setName(rs.getString("name"));
         club.setStreetAddress(rs.getString("streetAddress"));
-        club.setLocalityID(rs.getInt("clubLocality"));
+        club.setLocalityId(rs.getInt("localityId"));
         club.setPhoneNumber(rs.getString("phoneNumber"));
         club.setCreationDate(rs.getDate("creationDate"));
         club.setIsBeginnersFriendly(rs.getBoolean("isBeginnersFriendly"));
@@ -113,7 +108,7 @@ public class ClubDBAccess implements ClubDataAccess {
     }
 
     public ClubModel getClubById(int id) throws ClubSearchException {
-        String query = "SELECT * FROM Club WHERE idClub = ?";
+        String query = "SELECT * FROM Club WHERE clubId = ?";
 
         try {
             Connection connection = ConnectionDataAccess.getInstance();
@@ -159,8 +154,8 @@ public class ClubDBAccess implements ClubDataAccess {
         String query = """
             SELECT c.*
             FROM Club c
-            JOIN Membership m ON m.Club = c.idClub
-            WHERE m.Player = ?
+            JOIN Membership m ON m.clubId = c.clubId
+            WHERE m.playerId = ?
             ORDER BY m.registrationDate DESC
             LIMIT 1
         """;
@@ -168,7 +163,7 @@ public class ClubDBAccess implements ClubDataAccess {
         try {
             Connection connection = ConnectionDataAccess.getInstance();
             PreparedStatement statement = connection.prepareStatement(query);
-            statement.setInt(1, player.getPlayerID());
+            statement.setInt(1, player.getPlayerId());
             ResultSet rs = statement.executeQuery();
 
             ClubModel club = new ClubModel();
@@ -185,14 +180,13 @@ public class ClubDBAccess implements ClubDataAccess {
         }
     }
 
-    //Delete
     public Boolean deleteClub(ClubModel club) throws ClubDeletionException {
-        String query = "DELETE FROM Club WHERE idClub = ?";
+        String query = "DELETE FROM Club WHERE clubId = ?";
 
         try {
             Connection connection = ConnectionDataAccess.getInstance();
             PreparedStatement statement = connection.prepareStatement(query);
-            statement.setInt(1, club.getId());
+            statement.setInt(1, club.getClubId());
             int rowsAffected = statement.executeUpdate();
             return rowsAffected > 0;
         } catch (SQLException e) {

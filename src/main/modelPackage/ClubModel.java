@@ -5,8 +5,8 @@ import java.util.Date;
 
 public class ClubModel {
 
-    private Integer id;
-    private Integer localityID;
+    private Integer clubId;
+    private Integer localityId;
     private String name;
     private String streetAddress;
     private String phoneNumber;
@@ -15,11 +15,11 @@ public class ClubModel {
     private Boolean isBeginnersFriendly;
     private String instagramProfile;
 
-    public ClubModel(Integer id, String name, String streetAddress, int localityID, String phoneNumber, Date creationDate, String website, boolean isBeginnersFriendly, String instagramProfile) {
-        setId(id);
+    public ClubModel(Integer clubId, String name, String streetAddress, int localityId, String phoneNumber, Date creationDate, String website, boolean isBeginnersFriendly, String instagramProfile) {
+        setClubId(clubId);
         setName(name);
         setStreetAddress(streetAddress);
-        setLocalityID(localityID);
+        setLocalityId(localityId);
         setPhoneNumber(phoneNumber);
         setCreationDate(creationDate);
         setWebsite(website);
@@ -29,11 +29,11 @@ public class ClubModel {
 
     public ClubModel() {}
 
-    public Integer getId() { return id; }
-    public void setId(Integer id) {this.id = id;}
+    public Integer getClubId() { return clubId; }
+    public void setClubId(Integer clubId) {this.clubId = clubId;}
 
-    public Integer getLocalityID() {return localityID;}
-    public void setLocalityID(Integer localityID) {this.localityID = localityID;}
+    public Integer getLocalityId() {return localityId;}
+    public void setLocalityId(Integer localityId) {this.localityId = localityId;}
 
     public String getName() {return name;}
     public void setName(String name) {this.name = name;}

@@ -20,7 +20,9 @@ public class MainWindow extends JFrame {
     private JPanel crudClub;
     private JPanel researchTournamentMatches;
     private JPanel researchPlayerRegion;
-    private JPanel ballPanel;
+    private JPanel threadBallAnimation;
+    private JPanel businessStatPlayer;
+    private JPanel businessFindPlayer;
 
     private MenuBar menuBar;
     private ConnectionDataAccessController connectionController;
@@ -41,9 +43,11 @@ public class MainWindow extends JFrame {
         researchPlayer = new ResearchPlayer(this);
         researchTournamentMatches = new ResearchTournamentMatches(this);
         researchPlayerRegion = new ResearchPlayerRegion(this);
-        // Tread
-        ballPanel = new BallPanel();
-
+        // Business
+        businessStatPlayer = new BusinessStatPlayer();
+        businessFindPlayer = new BusinessFindPlayer();
+        // Thread
+        threadBallAnimation = new ThreadBallAnimation();
 
         menuBar = new MenuBar(this);
 
@@ -105,8 +109,16 @@ public class MainWindow extends JFrame {
         return researchPlayerRegion;
     }
 
-    public JPanel getThread() {
-        return ballPanel;
+    public JPanel getThreadBallAnimation() {
+        return threadBallAnimation;
+    }
+
+    public JPanel getBusinessStatPlayer() {
+        return businessStatPlayer;
+    }
+
+    public JPanel getBusinessFindPlayer() {
+        return businessFindPlayer;
     }
     
     

@@ -153,7 +153,7 @@ public class UpdateClubDialog extends JDialog implements ActionListener {
             List<LocalityModel> localities = localityController.getAllLocalities();
             for (LocalityModel locality : localities) {
                 localityComboBox.addItem(locality);
-                if (locality.getLocalityID().equals(currentClub.getLocalityID())) {
+                if (locality.getLocalityId().equals(currentClub.getLocalityId())) {
                     localityComboBox.setSelectedItem(locality);
                 }
             }
@@ -199,7 +199,7 @@ public class UpdateClubDialog extends JDialog implements ActionListener {
                 
                 LocalityModel selectedLocality = (LocalityModel) localityComboBox.getSelectedItem();
                 if (selectedLocality != null) {
-                    currentClub.setLocalityID(selectedLocality.getLocalityID());
+                    currentClub.setLocalityId(selectedLocality.getLocalityId());
                 }
 
                 // Save club

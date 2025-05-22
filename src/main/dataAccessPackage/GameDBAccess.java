@@ -11,10 +11,10 @@ public class GameDBAccess implements GameDataAccess {
     public GameDBAccess() {}
 
     private int gameInsertionOrUpdate(GameModel game, OperationType operationType) throws SQLException, ConnectionDataAccessException {
-        String insertionQuery = "INSERT INTO Game (startTime, endTime, courtId, tournamentId)" +
+        String insertionQuery = "INSERT INTO Game (startingDateHour, endingDateHour, courtId, tournamentId)" +
                 " VALUES (?, ?, ?, ?)";
 
-        String updateQuery = "UPDATE Game SET startTime = ?, endTime = ?, courtId = ?, tournamentId = ? WHERE gameId = ?";
+        String updateQuery = "UPDATE Game SET startingDateHour = ?, endingDateHour = ?, courtId = ?, tournamentId = ? WHERE gameId = ?";
 
         Connection connection = ConnectionDataAccess.getInstance();
         PreparedStatement statement;
@@ -25,18 +25,18 @@ public class GameDBAccess implements GameDataAccess {
             statement = connection.prepareStatement(updateQuery);
         }
 
-        statement.setTimestamp(1, Timestamp.valueOf(game.getStartTime()));
-        statement.setTimestamp(2, Timestamp.valueOf(game.getEndTime()));
+        statement.setTimestamp(1, Timestamp.valueOf(game.getStartingDateHour()));
+        statement.setTimestamp(2, Timestamp.valueOf(game.getEndingDateHour()));
         statement.setInt(3, game.getCourtId());
 
-        if (game.getTournement() != null) {
-            statement.setInt(4, game.getTournement());
+        if (game.getTournamentId() != null) {
+            statement.setInt(4, game.getTournamentId());
         } else {
             statement.setNull(4, Types.INTEGER);
         }
 
         if (operationType == OperationType.UPDATE) {
-            statement.setInt(5, game.getGameID());
+            statement.setInt(5, game.getGameId());
         }
 
         int rowsAffected = statement.executeUpdate();
@@ -45,7 +45,7 @@ public class GameDBAccess implements GameDataAccess {
             ResultSet rs = statement.getGeneratedKeys();
             if (rs.next()) {
                 int generatedId = rs.getInt(1);
-                game.setgameId(generatedId);
+                game.setGameId(generatedId);
             }
         }
 
@@ -75,20 +75,18 @@ public class GameDBAccess implements GameDataAccess {
     }
 
     public GameModel fillGame(ResultSet rs) throws SQLException {
-
         GameModel game = new GameModel();
-        game.setgameId(rs.getInt("gameId"));
-        game.setStartTime(rs.getTimestamp("startingDateHour").toLocalDateTime());
-        game.setEndTime(rs.getTimestamp("endingDateHour").toLocalDateTime());
+        game.setGameId(rs.getInt("gameId"));
+        game.setStartingDateHour(rs.getTimestamp("startingDateHour").toLocalDateTime());
+        game.setEndingDateHour(rs.getTimestamp("endingDateHour").toLocalDateTime());
         game.setCourtId(rs.getInt("courtId"));
 
         int tournamentId = rs.getInt("tournamentId");
         if(!rs.wasNull()) {
-            game.settournementId(tournamentId);
+            game.setTournamentId(tournamentId);
         }
 
         return game;
-
     }
 
     public GameModel getGameById(int id) throws GameSearchException {
@@ -118,13 +116,36 @@ public class GameDBAccess implements GameDataAccess {
         try {
             Connection connection = ConnectionDataAccess.getInstance();
             PreparedStatement statement = connection.prepareStatement(query);
-            statement.setInt(1, game.getGameID());
+            statement.setInt(1, game.getGameId());
             int rowsAffected = statement.executeUpdate();
             return rowsAffected > 0;
         } catch (SQLException e) {
             throw new GameDeletionException("Erreur lors de la suppression du match : " + e.getMessage());
         } catch (ConnectionDataAccessException e) {
             throw new GameDeletionException("Erreur de connexion lors de la suppression du match : " + e.getMessage());
+        }
+    }
+
+    @Override
+    public List<GameModel> getGamesByTournamentId(int tournamentId) throws GameSearchException {
+        String query = "SELECT * FROM Game WHERE tournementId = ?";
+        List<GameModel> games = new ArrayList<>();
+
+        try {
+            Connection connection = ConnectionDataAccess.getInstance();
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setInt(1, tournamentId);
+            ResultSet rs = statement.executeQuery();
+
+            while (rs.next()) {
+                games.add(fillGame(rs));
+            }
+            return games;
+
+        } catch (SQLException e) {
+            throw new GameSearchException("Erreur lors de la recherche des matchs: " + e.getMessage());
+        } catch (ConnectionDataAccessException e) {
+            throw new GameSearchException("Erreur de connexion lors de la recherche des matchs: " + e.getMessage());
         }
     }
 }

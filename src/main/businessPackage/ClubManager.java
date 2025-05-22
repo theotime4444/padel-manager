@@ -51,7 +51,7 @@ public class ClubManager {
 
         ValidationUtility.checkRequiredString(club.getName(), "Le nom", 1, 50);
         ValidationUtility.checkRequiredString(club.getStreetAddress(), "La rue", 1, 50);
-        ValidationUtility.checkValidId(club.getLocalityID(), "La localité");
+        ValidationUtility.checkValidId(club.getLocalityId(), "La localité");
         ValidationUtility.checkRequiredString(club.getPhoneNumber(), "Le numéro de téléphone", 1, 50);
         ValidationUtility.checkValidDate((Date) club.getCreationDate(), "La date de création");
 

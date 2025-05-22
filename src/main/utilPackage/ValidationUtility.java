@@ -2,6 +2,7 @@ package main.utilPackage;
 
 import main.exceptionPackage.ValidationException;
 import java.sql.Date;
+import java.time.LocalDateTime;
 import java.util.regex.Pattern;
 
 public class ValidationUtility {
@@ -64,6 +65,15 @@ public class ValidationUtility {
     public static void checkValidId(Integer id, String fieldName) throws ValidationException {
         if (id == null || id <= 0) {
             throw new ValidationException(String.valueOf(id), fieldName + " doit être un nombre positif.");
+        }
+    }
+
+    public static void checkValidDateTime(LocalDateTime dateTime, String fieldName) throws ValidationException {
+        if (dateTime == null) {
+            throw new ValidationException(fieldName + " est obligatoire.");
+        }
+        if (dateTime.isAfter(LocalDateTime.now())) {
+            throw new ValidationException(dateTime.toString(), fieldName + " ne peut pas être dans le futur.");
         }
     }
 } 

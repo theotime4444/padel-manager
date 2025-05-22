@@ -82,10 +82,10 @@ public class CrudClub extends JPanel implements ActionListener {
             
             for (ClubModel club : clubs) {
                 Object[] data = {
-                    club.getId(),
+                    club.getClubId(),
                     club.getName(),
                     club.getStreetAddress(),
-                    club.getLocalityID(),
+                    club.getLocalityId(),
                     club.getPhoneNumber(),
                     club.getCreationDate(),
                     club.getWebsite(),
@@ -155,7 +155,7 @@ public class CrudClub extends JPanel implements ActionListener {
                 for (int row : selectedRows) {
                     int clubId = (int) tableModel.getValueAt(row, 0);
                     ClubModel club = new ClubModel();
-                    club.setId(clubId);
+                    club.setClubId(clubId);
 
                     try {
                         if (!clubController.deleteClub(club)) {

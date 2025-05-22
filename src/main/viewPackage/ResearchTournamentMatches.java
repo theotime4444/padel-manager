@@ -1,31 +1,31 @@
 package main.viewPackage;
 
-import main.controllerPackage.PlayerController;
-import main.exceptionPackage.ConnectionDataAccessException;
-import main.exceptionPackage.PlayerSearchException;
-import main.modelPackage.NonEditableTableModel;
-import main.modelPackage.PlayerModel;
+import main.controllerPackage.*;
+import main.exceptionPackage.*;
+import main.modelPackage.*;
+import main.utilPackage.ValidationUtility;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.SimpleDateFormat;
 import java.util.List;
-
 
 public class ResearchTournamentMatches extends JPanel implements ActionListener {
     private MainWindow mainWindow;
-    private JTextField firstNameField;
-    private JTextField lastNameField;
+    private JTextField tournamentNameField;
     private JButton submitButton;
-    private PlayerController playerController;
+    private JTable resultTable;
     private DefaultTableModel tableModel;
+    private TournamentController tournamentController;
 
-    public ResearchTournamentMatches(MainWindow mainWindow) throws ConnectionDataAccessException {
+    public ResearchTournamentMatches(MainWindow mainWindow) {
         this.mainWindow = mainWindow;
+        this.tournamentController = new TournamentController();
 
-        JLabel title = new JLabel("Rechercher un joueur par nom et prénom :");
+        JLabel title = new JLabel("Rechercher les matchs d'un tournoi :");
         title.setFont(new Font("Arial", Font.BOLD, 16));
         title.setHorizontalAlignment(SwingConstants.CENTER);
 
@@ -33,51 +33,44 @@ public class ResearchTournamentMatches extends JPanel implements ActionListener 
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(10, 10, 10, 10);
         gbc.fill = GridBagConstraints.HORIZONTAL;
-
+        
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.gridwidth = 2;
         add(title, gbc);
 
-        playerController = new PlayerController();
-
-        // First name field
-        JLabel firstNameLabel = new JLabel("Prénom :");
+        // Tournament name field
+        JLabel tournamentNameLabel = new JLabel("Nom du tournoi :");
         gbc.gridx = 0;
         gbc.gridy = 1;
         gbc.gridwidth = 1;
-        add(firstNameLabel, gbc);
+        add(tournamentNameLabel, gbc);
 
-        firstNameField = new JTextField(20);
+        tournamentNameField = new JTextField(20);
         gbc.gridx = 1;
         gbc.gridy = 1;
-        add(firstNameField, gbc);
-
-        // Last name field
-        JLabel lastNameLabel = new JLabel("Nom :");
-        gbc.gridx = 0;
-        gbc.gridy = 2;
-        add(lastNameLabel, gbc);
-
-        lastNameField = new JTextField(20);
-        gbc.gridx = 1;
-        gbc.gridy = 2;
-        add(lastNameField, gbc);
+        add(tournamentNameField, gbc);
 
         submitButton = new JButton("Rechercher");
         gbc.gridx = 0;
-        gbc.gridy = 3;
+        gbc.gridy = 2;
         gbc.gridwidth = 2;
         gbc.anchor = GridBagConstraints.CENTER;
         add(submitButton, gbc);
         submitButton.addActionListener(this);
 
-        String[] columnNames = {"Nom", "Prénom", "Points ELO", "Pro"};
-        tableModel = new NonEditableTableModel(columnNames, 0);
-        JTable table = new JTable(tableModel);
-        JScrollPane scrollPane = new JScrollPane(table);
+        // Table des résultats
+        String[] columns = {"Tournoi", "Club ID", "Prix", "Début", "Fin", "Court ID", "Joueur ID", "Score", "Équipe"};
+        tableModel = new DefaultTableModel(columns, 0) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+        resultTable = new JTable(tableModel);
+        JScrollPane scrollPane = new JScrollPane(resultTable);
         gbc.gridx = 0;
-        gbc.gridy = 4;
+        gbc.gridy = 3;
         gbc.gridwidth = 2;
         gbc.fill = GridBagConstraints.BOTH;
         gbc.weightx = 1.0;
@@ -89,41 +82,49 @@ public class ResearchTournamentMatches extends JPanel implements ActionListener 
         tableModel.setRowCount(0);
     }
 
-    private void submit() {
-        try {
-            String firstName = firstNameField.getText().trim();
-            String lastName = lastNameField.getText().trim();
+    private void searchTournamentMatches() {
+        String tournamentName = tournamentNameField.getText().trim();
+        if (tournamentName.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Veuillez entrer un nom de tournoi", "Attention", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
 
-            if (firstName.isEmpty() || lastName.isEmpty()) {
-                mainWindow.displayError("Veuillez remplir les deux champs.");
+        try {
+            resetRows();
+            List<TournamentDisplayData> matches = tournamentController.getTournamentMatchesWithDetails(tournamentName);
+            
+            if (matches.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Aucun match trouvé pour ce tournoi", "Information", JOptionPane.INFORMATION_MESSAGE);
                 return;
             }
 
-            resetRows();
-            List<PlayerModel> players = playerController.getPlayersByFullName(firstName, lastName);
+            // Formatage des dates
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 
-            for (PlayerModel player : players) {
-                Object[] data = {
-                        player.getLastname(),
-                        player.getFirstname(),
-                        player.getEloPoints(),
-                        player.getIsPro() ? "Oui" : "Non"
+            // Affichage des résultats
+            for (TournamentDisplayData data : matches) {
+                Object[] row = {
+                    data.tournament.getName(),
+                    data.tournament.getClubId(),
+                    data.tournament.getPrize(),
+                    dateFormat.format(data.game.getStartingDateHour()),
+                    dateFormat.format(data.game.getEndingDateHour()),
+                    data.game.getCourtId(),
+                    data.participation.getPlayerId(),
+                    data.participation.getScore(),
+                    data.participation.getTeamNbr()
                 };
-                tableModel.addRow(data);
+                tableModel.addRow(row);
             }
 
-            if (players.isEmpty()) {
-                mainWindow.displayMessage("Aucun joueur trouvé avec ce nom et prénom.", "");
-            }
-
-        } catch (PlayerSearchException exception) {
-            mainWindow.displayError(exception.toString());
+        } catch (TournamentSearchException | GameSearchException | ParticipationSearchException e) {
+            JOptionPane.showMessageDialog(this, e.getMessage(), "Erreur de recherche", JOptionPane.ERROR_MESSAGE);
         }
     }
 
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == submitButton) {
-            submit();
+            searchTournamentMatches();
         }
     }
 }

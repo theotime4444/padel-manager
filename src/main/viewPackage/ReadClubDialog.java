@@ -64,9 +64,9 @@ public class ReadClubDialog extends JDialog {
 
             // Get locality information
             String localityInfo = "Non spécifiée";
-            if (club.getLocalityID() != null) {
+            if (club.getLocalityId() != null) {
                 try {
-                    LocalityModel locality = localityController.getLocalityById(club.getLocalityID());
+                    LocalityModel locality = localityController.getLocalityById(club.getLocalityId());
                     if (locality != null) {
                         localityInfo = locality.getCity() + " (" + locality.getRegion() + ")";
                     } else {
@@ -79,7 +79,7 @@ public class ReadClubDialog extends JDialog {
             }
 
             // Add club information
-            addInfoRow(contentPanel, gbc, "ID:", String.valueOf(club.getId()), 0);
+            addInfoRow(contentPanel, gbc, "ID:", String.valueOf(club.getClubId()), 0);
             addInfoRow(contentPanel, gbc, "Nom:", club.getName(), 1);
             addInfoRow(contentPanel, gbc, "Adresse:", club.getStreetAddress(), 2);
             addInfoRow(contentPanel, gbc, "Localité:", localityInfo, 3);
