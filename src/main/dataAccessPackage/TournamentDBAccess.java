@@ -11,9 +11,9 @@ public class TournamentDBAccess implements TournamentDataAccess {
 
     public TournamentModel fillTournament(ResultSet rs) throws SQLException {
         TournamentModel tournament = new TournamentModel();
-        tournament.setTournamentId(rs.getInt("tournementId"));
+        tournament.setTournamentId(rs.getInt("tournamentId"));
         tournament.setName(rs.getString("name"));
-        tournament.setPrize(rs.getInt("prize"));
+        tournament.setPrize(rs.getString("prize"));
         tournament.setStartingDateHour(rs.getTimestamp("startingDateHour").toLocalDateTime());
         tournament.setEndingDateHour(rs.getTimestamp("endingDateHour").toLocalDateTime());
         tournament.setClubId(rs.getInt("clubId"));

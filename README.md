@@ -107,7 +107,7 @@ PadelManager/
 ### **Installation**
 1. **Cloner le projet**
    ```bash
-   git clone https://github.com/TonNomUtilisateur/padel-manager.git
+   git clone https://github.com/theotime4444/padel-manager.git
    ```
 2. **Importer le projet dans IntelliJ**
 3. **Configurer la base de données** avec le script SQL fourni (`database.sql`)

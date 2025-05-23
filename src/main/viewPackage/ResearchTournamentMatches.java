@@ -12,6 +12,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Date;
+import java.time.ZoneId;
 
 public class ResearchTournamentMatches extends JPanel implements ActionListener {
     private MainWindow mainWindow;
@@ -107,8 +109,8 @@ public class ResearchTournamentMatches extends JPanel implements ActionListener 
                     data.tournament.getName(),
                     data.tournament.getClubId(),
                     data.tournament.getPrize(),
-                    dateFormat.format(data.game.getStartingDateHour()),
-                    dateFormat.format(data.game.getEndingDateHour()),
+                    dateFormat.format(Date.from(data.tournament.getStartingDateHour().atZone(ZoneId.systemDefault()).toInstant())),
+                    dateFormat.format(Date.from(data.game.getEndingDateHour().atZone(ZoneId.systemDefault()).toInstant())),
                     data.game.getCourtId(),
                     data.participation.getPlayerId(),
                     data.participation.getScore(),

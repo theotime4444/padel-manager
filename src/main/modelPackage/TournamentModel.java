@@ -5,12 +5,12 @@ import java.time.LocalDateTime;
 public class TournamentModel {
     private Integer tournamentId;
     private String name;
-    private double prize;
+    private String prize;
     private LocalDateTime startingDateHour;
     private LocalDateTime endingDateHour;
     private Integer clubId;
 
-    public TournamentModel(String name, double prize, LocalDateTime startingDateHour, LocalDateTime endingDateHour) {
+    public TournamentModel(String name, String prize, LocalDateTime startingDateHour, LocalDateTime endingDateHour) {
         this.name = name;
         this.prize = prize;
         this.startingDateHour = startingDateHour;
@@ -35,11 +35,11 @@ public class TournamentModel {
         this.name = name;
     }
 
-    public double getPrize() {
+    public String getPrize() {
         return prize;
     }
 
-    public void setPrize(double prize) {
+    public void setPrize(String prize) {
         this.prize = prize;
     }
 

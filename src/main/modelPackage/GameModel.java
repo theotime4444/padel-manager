@@ -7,7 +7,7 @@ public class GameModel {
     private LocalDateTime startingDateHour;
     private LocalDateTime endingDateHour;
     private Integer courtId;
-    private Integer tournementId;
+    private Integer tournamentId;
 
     public GameModel(LocalDateTime startingDateHour, LocalDateTime endingDateHour) {
         setStartingDateHour(startingDateHour);
@@ -49,10 +49,10 @@ public class GameModel {
     }
 
     public Integer getTournamentId() {
-        return tournementId;
+        return tournamentId;
     }
 
     public void setTournamentId(Integer tournamentId) {
-        this.tournementId = tournamentId;
+        this.tournamentId = tournamentId;
     }
 }

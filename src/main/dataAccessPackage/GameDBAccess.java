@@ -128,7 +128,7 @@ public class GameDBAccess implements GameDataAccess {
 
     @Override
     public List<GameModel> getGamesByTournamentId(int tournamentId) throws GameSearchException {
-        String query = "SELECT * FROM Game WHERE tournementId = ?";
+        String query = "SELECT * FROM Game WHERE tournamentId = ?";
         List<GameModel> games = new ArrayList<>();
 
         try {
