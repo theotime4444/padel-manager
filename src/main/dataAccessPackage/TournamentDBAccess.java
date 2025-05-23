@@ -21,8 +21,8 @@ public class TournamentDBAccess implements TournamentDataAccess {
     }
 
     @Override
-    public TournamentModel getTournamentByName(String name) throws TournamentSearchException {
-        String query = "SELECT * FROM Tournament WHERE name LIKE ?";
+    public List<TournamentModel> getTournamentsByName(String name) throws TournamentSearchException {
+        String query = "SELECT * FROM Tournament WHERE LOWER(name) LIKE LOWER(?)";
 
         try {
             Connection connection = ConnectionDataAccess.getInstance();
@@ -30,15 +30,17 @@ public class TournamentDBAccess implements TournamentDataAccess {
             statement.setString(1, "%" + name + "%");
             ResultSet rs = statement.executeQuery();
 
-            if (rs.next()) {
-                return fillTournament(rs);
+            List<TournamentModel> tournaments = new ArrayList<>();
+            while (rs.next()) {
+                tournaments.add(fillTournament(rs));
             }
-            return null;
+
+            return tournaments;
 
         } catch (SQLException e) {
-            throw new TournamentSearchException("Erreur lors de la recherche du tournoi: " + e.getMessage());
+            throw new TournamentSearchException("Erreur lors de la recherche des tournois: " + e.getMessage());
         } catch (ConnectionDataAccessException e) {
-            throw new TournamentSearchException("Erreur de connexion lors de la recherche du tournoi: " + e.getMessage());
+            throw new TournamentSearchException("Erreur de connexion lors de la recherche des tournois: " + e.getMessage());
         }
     }
 } 

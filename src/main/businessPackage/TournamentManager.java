@@ -22,37 +22,37 @@ public class TournamentManager {
         this.playerManager = new PlayerManager();
     }
 
-    public TournamentModel getTournamentByName(String name) throws TournamentSearchException {
+    public List<TournamentModel> getTournamentsByName(String name) throws TournamentSearchException {
         if (name == null || name.trim().isEmpty()) {
             throw new TournamentSearchException("Le nom du tournoi ne peut pas être vide");
         }
-        return tournamentDataAccess.getTournamentByName(name);
+        return tournamentDataAccess.getTournamentsByName(name);
     }
 
     public List<TournamentDisplayData> getTournamentMatchesWithDetails(String tournamentName) 
             throws TournamentSearchException, GameSearchException, ParticipationSearchException {
-        // Recherche du tournoi
-        TournamentModel tournament = getTournamentByName(tournamentName);
-        if (tournament == null) {
-            return new ArrayList<>();
-        }
-
-        // Récupération des matchs du tournoi
-        List<GameModel> games = gameManager.getGamesByTournamentId(tournament.getTournamentId());
-        if (games.isEmpty()) {
+        // Recherche des tournois
+        List<TournamentModel> tournaments = getTournamentsByName(tournamentName);
+        if (tournaments.isEmpty()) {
             return new ArrayList<>();
         }
 
         List<TournamentDisplayData> result = new ArrayList<>();
 
-        // Pour chaque match
-        for (GameModel game : games) {
-            // Récupération des participations
-            List<ParticipationModel> participations = participationManager.getParticipationsByGameId(game.getGameId());
+        // Pour chaque tournoi trouvé
+        for (TournamentModel tournament : tournaments) {
+            // Récupération des matchs du tournoi
+            List<GameModel> games = gameManager.getGamesByTournamentId(tournament.getTournamentId());
             
-            // Pour chaque participation
-            for (ParticipationModel participation : participations) {
-                result.add(new TournamentDisplayData(tournament, game, participation));
+            // Pour chaque match
+            for (GameModel game : games) {
+                // Récupération des participations
+                List<ParticipationModel> participations = participationManager.getParticipationsByGameId(game.getGameId());
+                
+                // Pour chaque participation
+                for (ParticipationModel participation : participations) {
+                    result.add(new TournamentDisplayData(tournament, game, participation));
+                }
             }
         }
 
