@@ -6,4 +6,5 @@ import java.util.List;
 
 public interface ParticipationDataAccess {
     List<ParticipationModel> getParticipationsByGameId(int gameId) throws ParticipationSearchException;
+    List<ParticipationModel> getParticipationsByPlayerId(int playerId) throws ParticipationSearchException;
 } 

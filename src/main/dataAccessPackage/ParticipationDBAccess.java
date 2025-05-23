@@ -40,4 +40,26 @@ public class ParticipationDBAccess implements ParticipationDataAccess {
             throw new ParticipationSearchException("Erreur de connexion lors de la recherche des participations: " + e.getMessage());
         }
     }
+
+    public List<ParticipationModel> getParticipationsByPlayerId(int playerId) throws ParticipationSearchException {
+        String query = "SELECT * FROM Participation WHERE playerId = ?";
+        List<ParticipationModel> participations = new ArrayList<>();
+
+        try {
+            Connection connection = ConnectionDataAccess.getInstance();
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setInt(1, playerId);
+            ResultSet rs = statement.executeQuery();
+
+            while (rs.next()) {
+                participations.add(fillParticipation(rs));
+            }
+            return participations;
+
+        } catch (SQLException e) {
+            throw new ParticipationSearchException("Erreur lors de la recherche des participations: " + e.getMessage());
+        } catch (ConnectionDataAccessException e) {
+            throw new ParticipationSearchException("Erreur de connexion lors de la recherche des participations: " + e.getMessage());
+        }
+    }
 } 
