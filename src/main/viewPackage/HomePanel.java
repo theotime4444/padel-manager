@@ -20,7 +20,7 @@ public class HomePanel extends JPanel {
                             <li>Opérations CRUD</li>
                             <li>Recherches</li>
                             <li>Tâche métier</li>
-                            <li>Animation de like (Thread)</li>
+                            <li>Animation de balle (Thread)</li>
                         </ul>
                         <p><i>Pour commencer, sélectionnez une option dans le menu.</i></p>
                     </div>

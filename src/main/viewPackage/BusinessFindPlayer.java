@@ -2,9 +2,9 @@ package main.viewPackage;
 
 import main.controllerPackage.PlayerController;
 import main.controllerPackage.LocalityController;
-import main.exceptionPackage.*;
 import main.modelPackage.PlayerModel;
 import main.modelPackage.LocalityModel;
+import main.exceptionPackage.*;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -87,11 +87,9 @@ public class BusinessFindPlayer extends JPanel {
         resultTable = new JTable(tableModel);
         JScrollPane scrollPane = new JScrollPane(resultTable);
 
-        // Ajout des composants
         add(searchPanel, BorderLayout.NORTH);
         add(scrollPane, BorderLayout.CENTER);
 
-        // Action du bouton
         searchButton.addActionListener(e -> searchPartners());
     }
 
@@ -106,14 +104,12 @@ public class BusinessFindPlayer extends JPanel {
         }
 
         try {
-            // Récupérer les partenaires potentiels
             List<PlayerModel> partners = playerController.findPotentialPartnersByEloAndCity(
                 eloPoints,
                 selectedLocality.getCity(),
                 maxEloDifference
             );
 
-            // Vider la table
             tableModel.setRowCount(0);
 
             if (partners.isEmpty()) {
@@ -122,7 +118,6 @@ public class BusinessFindPlayer extends JPanel {
                 return;
             }
 
-            // Afficher les partenaires
             for (PlayerModel partner : partners) {
                 tableModel.addRow(new Object[]{
                     partner.getPlayerId(),
@@ -140,7 +135,6 @@ public class BusinessFindPlayer extends JPanel {
         }
     }
 
-    // Custom renderer for LocalityModel in ComboBox
     private class LocalityListCellRenderer extends DefaultListCellRenderer {
         @Override
         public Component getListCellRendererComponent(JList<?> list, Object value, int index,

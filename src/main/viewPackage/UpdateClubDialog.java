@@ -2,9 +2,9 @@ package main.viewPackage;
 
 import main.controllerPackage.ClubController;
 import main.controllerPackage.LocalityController;
-import main.exceptionPackage.*;
 import main.modelPackage.ClubModel;
 import main.modelPackage.LocalityModel;
+import main.exceptionPackage.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -59,7 +59,7 @@ public class UpdateClubDialog extends JDialog implements ActionListener {
     }
 
     private void createContent() {
-        // Create form panel
+        // Panel du formulaire
         JPanel formPanel = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(5, 5, 5, 5);
@@ -166,7 +166,7 @@ public class UpdateClubDialog extends JDialog implements ActionListener {
 
         add(formPanel, BorderLayout.CENTER);
 
-        // Buttons panel
+        // Panel des boutons
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         submitButton = new JButton("Modifier");
         cancelButton = new JButton("Annuler");
@@ -181,17 +181,17 @@ public class UpdateClubDialog extends JDialog implements ActionListener {
     public void actionPerformed(ActionEvent actionEvent) {
         if (actionEvent.getSource() == submitButton) {
             try {
-                // Update club
+                // Mise à jour du club
                 currentClub.setName(nameField.getText());
                 currentClub.setStreetAddress(streetAddressField.getText());
                 currentClub.setPhoneNumber(phoneField.getText());
                 currentClub.setWebsite(websiteField.getText());
                 currentClub.setInstagramProfile(instagramField.getText());
                 
-                // Create date from spinners
+                // Création de la date à partir des spinners
                 Calendar cal = Calendar.getInstance();
                 cal.set(Calendar.YEAR, (Integer) yearSpinner.getValue());
-                cal.set(Calendar.MONTH, (Integer) monthSpinner.getValue() - 1); // Month is 0-based
+                cal.set(Calendar.MONTH, (Integer) monthSpinner.getValue() - 1);
                 cal.set(Calendar.DAY_OF_MONTH, (Integer) daySpinner.getValue());
                 currentClub.setCreationDate(new Date(cal.getTimeInMillis()));
                 
@@ -202,13 +202,13 @@ public class UpdateClubDialog extends JDialog implements ActionListener {
                     currentClub.setLocalityId(selectedLocality.getLocalityId());
                 }
 
-                // Save club
+                // Sauvegarde du club
                 clubController.updateClub(currentClub);
                 
-                // Refresh parent panel
+                // Rafraîchissement du panel parent
                 parentPanel.loadClubs();
                 
-                // Close dialog
+                // Fermeture de la boîte de dialogue
                 dispose();
 
             } catch (ClubUpdateException e) {
@@ -227,7 +227,7 @@ public class UpdateClubDialog extends JDialog implements ActionListener {
         }
     }
 
-    // Custom renderer for LocalityModel in ComboBox
+    // Rendu personnalisé pour LocalityModel dans ComboBox
     private class LocalityListCellRenderer extends DefaultListCellRenderer {
         @Override
         public Component getListCellRendererComponent(JList<?> list, Object value, int index,

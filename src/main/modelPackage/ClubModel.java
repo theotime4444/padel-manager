@@ -29,8 +29,12 @@ public class ClubModel {
 
     public ClubModel() {}
 
-    public Integer getClubId() { return clubId; }
-    public void setClubId(Integer clubId) {this.clubId = clubId;}
+    public Integer getClubId() {
+        return clubId;
+    }
+    public void setClubId(Integer clubId) {
+        this.clubId = clubId;
+    }
 
     public Integer getLocalityId() {return localityId;}
     public void setLocalityId(Integer localityId) {this.localityId = localityId;}

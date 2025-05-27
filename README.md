@@ -69,9 +69,9 @@ PadelManager/
 │   │   ├── dataAccessPackage/ # Interfaces et implémentations DAO (PlayerDataAccess, PlayerDBAccess...)
 │   │   ├── exceptionPackage/  # Exceptions personnalisées (PlayerCreationException, ClubDeletionException...)
 │   │   ├── modelPackage/      # Modèles de données (PlayerModel, ClubModel, GameModel...)
-│   │   ├── mainPackage/       # Point d'entrée de l'application
+│   │   ├── utilPackage/       # Outils (ValidationUtility)
+│   │   ├── viewPackage/       # Point d'entrée de l'application + interfaces
 │   ├── resources/             # Fichiers de configuration et assets
-│   │   ├── assets/
 │   │   ├── database.sql       # Fichier de configuration de la base de donnée MySQL
 │   ├── test/                  # Tests unitaires
 │── .gitignore
@@ -83,7 +83,7 @@ PadelManager/
 - Java (JDK 17)
 - MySQL
 - JDBC (ou Hibernate)
-- JavaFX (ou API REST avec Spring Boot si applicable)
+- Swing
 - JUnit pour les tests
 
 📌 **Design Patterns** :
@@ -100,7 +100,7 @@ PadelManager/
 ## **4. Instructions d'Installation et d'Utilisation**
 
 ### **Prérequis**
-- Installer **Java JDK 17**
+- Installer **Java JDK**
 - Installer **IntelliJ IDEA**
 - Installer **MySQL**
 
@@ -123,19 +123,7 @@ jdbc.password=mot_de_passe
 
 ---
 
-## **5. Gestion des Contributions et Développement**
-
-📌 **Workflow Git** :
-La branche principale est `main`
-
-📌 **Répartition des tâches** :
-- Joueurs → Théotime Allard
-- Club → Nathan Feltesse
-- Tournois → Antoine de Vinck
-
----
-
-## **6. Évaluation et Pénalités**
+## **5. Évaluation et Pénalités**
 
 🚨 **Pénalités si non-respect des contraintes** :
 - Retard dans les livrables 📅
@@ -145,7 +133,7 @@ La branche principale est `main`
 
 ---
 
-## **7. Contacts et Support**
+## **6. Contacts et Support**
 Pour toute question ou contribution, contactez-nous via :
 📧 Email : theotime4444@gmail.com
 📌 GitHub Issues : https://github.com/theotime4444/padel-manager

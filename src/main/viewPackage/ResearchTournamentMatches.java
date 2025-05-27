@@ -1,9 +1,9 @@
 package main.viewPackage;
 
 import main.controllerPackage.*;
-import main.exceptionPackage.*;
 import main.modelPackage.*;
 import main.utilPackage.ValidationUtility;
+import main.exceptionPackage.*;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -17,11 +17,11 @@ import java.time.ZoneId;
 
 public class ResearchTournamentMatches extends JPanel implements ActionListener {
     private MainWindow mainWindow;
+    private TournamentController tournamentController;
     private JTextField tournamentNameField;
     private JButton submitButton;
     private JTable resultTable;
     private DefaultTableModel tableModel;
-    private TournamentController tournamentController;
 
     public ResearchTournamentMatches(MainWindow mainWindow) {
         this.mainWindow = mainWindow;
@@ -41,7 +41,7 @@ public class ResearchTournamentMatches extends JPanel implements ActionListener 
         gbc.gridwidth = 2;
         add(title, gbc);
 
-        // Tournament name field
+        // Champ nom du tournoi
         JLabel tournamentNameLabel = new JLabel("Nom du tournoi :");
         gbc.gridx = 0;
         gbc.gridy = 1;
@@ -53,6 +53,7 @@ public class ResearchTournamentMatches extends JPanel implements ActionListener 
         gbc.gridy = 1;
         add(tournamentNameField, gbc);
 
+        // Bouton de recherche
         submitButton = new JButton("Rechercher");
         gbc.gridx = 0;
         gbc.gridy = 2;
@@ -100,10 +101,8 @@ public class ResearchTournamentMatches extends JPanel implements ActionListener 
                 return;
             }
 
-            // Formatage des dates
             SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 
-            // Affichage des résultats
             for (TournamentDisplayData data : matches) {
                 Object[] row = {
                     data.tournament.getName(),

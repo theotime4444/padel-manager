@@ -61,7 +61,7 @@ CREATE TABLE Court (
   isOutdoor TINYINT NOT NULL,
   clubId INT NOT NULL,
   PRIMARY KEY (courtId),
-  FOREIGN KEY (clubId) REFERENCES Club(clubId)
+  FOREIGN KEY (clubId) REFERENCES Club(clubId) ON DELETE CASCADE
 );
 
 -- ========== TABLE: Tournament ==========
@@ -73,7 +73,7 @@ CREATE TABLE Tournament (
   endingDateHour DATETIME NOT NULL,
   clubId INT NOT NULL,
   PRIMARY KEY (tournamentId),
-  FOREIGN KEY (clubId) REFERENCES Club(clubId)
+  FOREIGN KEY (clubId) REFERENCES Club(clubId) ON DELETE CASCADE
 );
 
 -- ========== TABLE: Game ==========
@@ -85,7 +85,7 @@ CREATE TABLE Game (
   tournamentId INT,
   PRIMARY KEY (gameId),
   FOREIGN KEY (courtId) REFERENCES Court(courtId),
-  FOREIGN KEY (tournamentId) REFERENCES Tournament(tournamentId)
+  FOREIGN KEY (tournamentId) REFERENCES Tournament(tournamentId) ON DELETE CASCADE
 );
 
 -- ========== TABLE: Membership ==========
@@ -94,8 +94,8 @@ CREATE TABLE Membership (
   clubId INT NOT NULL,
   playerId INT NOT NULL,
   PRIMARY KEY (registrationDate, clubId, playerId),
-  FOREIGN KEY (clubId) REFERENCES Club(clubId),
-  FOREIGN KEY (playerId) REFERENCES Player(playerId)
+  FOREIGN KEY (clubId) REFERENCES Club(clubId) ON DELETE CASCADE,
+  FOREIGN KEY (playerId) REFERENCES Player(playerId) ON DELETE CASCADE
 );
 
 -- ========== TABLE: Participation ==========
@@ -106,7 +106,7 @@ CREATE TABLE Participation (
   teamNbr INT NOT NULL,
   PRIMARY KEY (gameId, playerId),
   FOREIGN KEY (gameId) REFERENCES Game(gameId),
-  FOREIGN KEY (playerId) REFERENCES Player(playerId)
+  FOREIGN KEY (playerId) REFERENCES Player(playerId) ON DELETE CASCADE
 );
 
 -- ========== Données de démonstration ==========

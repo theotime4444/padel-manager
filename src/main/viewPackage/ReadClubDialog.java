@@ -2,9 +2,9 @@ package main.viewPackage;
 
 import main.controllerPackage.ClubController;
 import main.controllerPackage.LocalityController;
-import main.exceptionPackage.*;
 import main.modelPackage.ClubModel;
 import main.modelPackage.LocalityModel;
+import main.exceptionPackage.*;
 
 import javax.swing.*;
 import java.awt.*;

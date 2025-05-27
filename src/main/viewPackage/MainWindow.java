@@ -14,18 +14,17 @@ public class MainWindow extends JFrame {
     private static final int X_BOUNDS = (SCREEN_SIZE.width - FRAME_WIDTH) / 2;
     private static final int Y_BOUNDS = (SCREEN_SIZE.height - FRAME_HEIGHT) / 2;
 
+    private ConnectionDataAccessController connectionController;
+    private MenuBar menuBar;
     private JPanel homePanel;
-    private JPanel researchPlayer;
     private JPanel crudPlayer;
     private JPanel crudClub;
+    private JPanel researchPlayer;
     private JPanel researchTournamentMatches;
     private JPanel researchPlayerRegion;
-    private JPanel threadBallAnimation;
     private JPanel businessStatPlayer;
     private JPanel businessFindPlayer;
-
-    private MenuBar menuBar;
-    private ConnectionDataAccessController connectionController;
+    private JPanel threadBallAnimation;
 
     public MainWindow() throws ConnectionDataAccessException {
         super(WINDOW_TITLE);
@@ -35,20 +34,22 @@ public class MainWindow extends JFrame {
 
         connectionController = new ConnectionDataAccessController();
 
+        // Panel d'accueil
         homePanel = new HomePanel();
-        // CRUD
+        // Panels CRUD
         crudPlayer = new CrudPlayer(this);
         crudClub = new CrudClub(this);
-        // Research
+        // Panels de recherche
         researchPlayer = new ResearchPlayer(this);
         researchTournamentMatches = new ResearchTournamentMatches(this);
         researchPlayerRegion = new ResearchPlayerRegion(this);
-        // Business
+        // Panels métier
         businessStatPlayer = new BusinessStatPlayer();
         businessFindPlayer = new BusinessFindPlayer();
-        // Thread
+        // Panel d'animation
         threadBallAnimation = new ThreadBallAnimation();
 
+        // Barre de menu
         menuBar = new MenuBar(this);
 
         switchPanel(homePanel);
@@ -87,11 +88,9 @@ public class MainWindow extends JFrame {
         return homePanel;
     }
 
-
     public JPanel getCrudPlayer() {
         return crudPlayer;
     }
-
 
     public JPanel getCrudClub() {
         return crudClub;
@@ -120,6 +119,4 @@ public class MainWindow extends JFrame {
     public JPanel getBusinessFindPlayer() {
         return businessFindPlayer;
     }
-    
-    
 }

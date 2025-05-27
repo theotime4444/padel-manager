@@ -89,43 +89,6 @@ public class GameDBAccess implements GameDataAccess {
         return game;
     }
 
-    public GameModel getGameById(int id) throws GameSearchException {
-        String query = "SELECT * FROM Game WHERE gameId = ?";
-
-        try {
-            Connection connection = ConnectionDataAccess.getInstance();
-            PreparedStatement statement = connection.prepareStatement(query);
-            statement.setInt(1, id);
-            ResultSet rs = statement.executeQuery();
-
-            if (rs.next()) {
-                return fillGame(rs);
-            }
-            return null;
-
-        } catch (SQLException e) {
-            throw new GameSearchException("Erreur lors de la recherche du match : " + e.getMessage());
-        } catch (ConnectionDataAccessException e) {
-            throw new GameSearchException("Erreur de connexion lors de la recherche du match : " + e.getMessage());
-        }
-    }
-
-    public Boolean deleteGame(GameModel game) throws GameDeletionException {
-        String query = "DELETE FROM Game WHERE gameId = ?";
-
-        try {
-            Connection connection = ConnectionDataAccess.getInstance();
-            PreparedStatement statement = connection.prepareStatement(query);
-            statement.setInt(1, game.getGameId());
-            int rowsAffected = statement.executeUpdate();
-            return rowsAffected > 0;
-        } catch (SQLException e) {
-            throw new GameDeletionException("Erreur lors de la suppression du match : " + e.getMessage());
-        } catch (ConnectionDataAccessException e) {
-            throw new GameDeletionException("Erreur de connexion lors de la suppression du match : " + e.getMessage());
-        }
-    }
-
     @Override
     public List<GameModel> getGamesByTournamentId(int tournamentId) throws GameSearchException {
         String query = "SELECT * FROM Game WHERE tournamentId = ?";

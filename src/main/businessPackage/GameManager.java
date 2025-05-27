@@ -5,9 +5,6 @@ import main.dataAccessPackage.GameDBAccess;
 import main.exceptionPackage.GameSearchException;
 import main.modelPackage.GameModel;
 import java.util.List;
-import main.exceptionPackage.GameCreationException;
-import main.exceptionPackage.GameUpdateException;
-import main.utilPackage.ValidationUtility;
 
 public class GameManager {
     private GameDataAccess gameDataAccess;

@@ -92,16 +92,16 @@ public class PlayerManager {
     public void validatePlayer(PlayerModel player) throws ValidationException {
         if (player == null) throw new ValidationException("null", "Le joueur est nul");
 
-        ValidationUtility.checkRequiredString(player.getLastname(), "Le nom", 1, 50);
-        ValidationUtility.checkRequiredString(player.getFirstname(), "Le prénom", 1, 50);
+        ValidationUtility.checkRequiredString(player.getLastname(), "Le nom", 1, 20);
+        ValidationUtility.checkRequiredString(player.getFirstname(), "Le prénom", 1, 20);
         ValidationUtility.checkValidEmail(player.getEmail(), "L'email");
         ValidationUtility.checkValidDate((Date) player.getBirthdayDate(), "La date de naissance");
         ValidationUtility.checkValidGender(player.getGender(), "Le genre");
-        ValidationUtility.checkValidRange(player.getEloPoints(), 0, 5000, "Les points ELO");
+        ValidationUtility.checkValidRange(player.getEloPoints(), 0, 2000000, "Les points ELO");
         ValidationUtility.checkValidId(player.getLocalityId(), "La localité");
 
         ValidationUtility.checkOptionalString(player.getPhoneNumber(), "Le numéro de téléphone", 1, 20);
-        ValidationUtility.checkOptionalString(player.getInstagramProfile(), "Le profil Instagram", 1, 255);
+        ValidationUtility.checkOptionalString(player.getInstagramProfile(), "Le profil Instagram", 1, 50);
     }
 
     public PlayerStatsDisplayData getPlayerStats(int playerId) throws PlayerSearchException {

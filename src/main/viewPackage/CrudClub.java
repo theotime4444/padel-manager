@@ -1,25 +1,26 @@
 package main.viewPackage;
 
+import main.controllerPackage.ClubController;
+import main.modelPackage.ClubModel;
+import main.modelPackage.NonEditableTableModel;
+import main.exceptionPackage.*;
+
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
-import main.controllerPackage.ClubController;
-import main.exceptionPackage.*;
-import main.modelPackage.ClubModel;
-import main.modelPackage.NonEditableTableModel;
 
 public class CrudClub extends JPanel implements ActionListener {
     private MainWindow mainWindow;
+    private ClubController clubController;
     private JTable clubTable;
     private DefaultTableModel tableModel;
     private JButton createButton;
     private JButton readButton;
     private JButton updateButton;
     private JButton deleteButton;
-    private ClubController clubController;
 
     public CrudClub(MainWindow mainWindow) throws ConnectionDataAccessException {
         this.mainWindow = mainWindow;
@@ -27,20 +28,20 @@ public class CrudClub extends JPanel implements ActionListener {
         
         setLayout(new BorderLayout());
         
-        // Create title
+        // Titre
         JLabel title = new JLabel("Gestion des Clubs");
         title.setFont(new Font("Arial", Font.BOLD, 16));
         title.setHorizontalAlignment(SwingConstants.CENTER);
         add(title, BorderLayout.NORTH);
 
-        // Create table
+        // Table des clubs
         String[] columnNames = {"ID", "Nom", "Adresse", "Localité", "Téléphone", "Date de création", "Site web", "Débutants acceptés", "Instagram"};
         tableModel = new NonEditableTableModel(columnNames, 0);
         clubTable = new JTable(tableModel);
         JScrollPane scrollPane = new JScrollPane(clubTable);
         add(scrollPane, BorderLayout.CENTER);
 
-        // Create button panel
+        // Panel des boutons
         JPanel buttonPanel = new JPanel(new FlowLayout());
         createButton = new JButton("Créer");
         readButton = new JButton("Voir");
@@ -59,7 +60,6 @@ public class CrudClub extends JPanel implements ActionListener {
 
         add(buttonPanel, BorderLayout.SOUTH);
 
-        // Add selection listener
         clubTable.getSelectionModel().addListSelectionListener(e -> {
             int selectedRows = clubTable.getSelectedRowCount();
             boolean singleSelection = selectedRows == 1;
@@ -71,7 +71,6 @@ public class CrudClub extends JPanel implements ActionListener {
             deleteButton.setEnabled(selectedRows > 0);
         });
 
-        // Load initial data
         loadClubs();
     }
 
@@ -169,13 +168,13 @@ public class CrudClub extends JPanel implements ActionListener {
                 }
 
                 if (allDeleted) {
-                    loadClubs(); // Recharge la table
+                    loadClubs();
                     JOptionPane.showMessageDialog(this, 
                         "Tous les clubs ont été supprimés avec succès.", 
                         "Suppression réussie", 
                         JOptionPane.INFORMATION_MESSAGE);
                 } else {
-                    loadClubs(); // Recharge la table même en cas d'erreur partielle
+                    loadClubs();
                     JOptionPane.showMessageDialog(this, 
                         "Certains clubs n'ont pas pu être supprimés :\n" + errorMessage.toString(), 
                         "Erreur de suppression", 
@@ -198,139 +197,3 @@ public class CrudClub extends JPanel implements ActionListener {
         }
     }
 }
-
-
-/*
-package main.viewPackage;
-
-import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.List;
-import main.controllerPackage.PlayerController;
-import main.exceptionPackage.ConnectionDataAccessException;
-import main.exceptionPackage.PlayerSearchException;
-import main.modelPackage.PlayerModel;
-import main.modelPackage.NonEditableTableModel;
-
-public class ResearchPlayer extends JPanel implements ActionListener {
-    private MainWindow mainWindow;
-    private JTextField firstNameField;
-    private JTextField lastNameField;
-    private JButton submitButton;
-    private PlayerController playerController;
-    private DefaultTableModel tableModel;
-
-    public ResearchPlayer(MainWindow mainWindow) throws ConnectionDataAccessException {
-        this.mainWindow = mainWindow;
-
-        JLabel title = new JLabel("Rechercher un joueur par nom et prénom :");
-        title.setFont(new Font("Arial", Font.BOLD, 16));
-        title.setHorizontalAlignment(SwingConstants.CENTER);
-
-        setLayout(new GridBagLayout());
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(10, 10, 10, 10);
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-        gbc.gridwidth = 2;
-        add(title, gbc);
-
-        playerController = new PlayerController();
-
-        // First name field
-        JLabel firstNameLabel = new JLabel("Prénom :");
-        gbc.gridx = 0;
-        gbc.gridy = 1;
-        gbc.gridwidth = 1;
-        add(firstNameLabel, gbc);
-
-        firstNameField = new JTextField(20);
-        gbc.gridx = 1;
-        gbc.gridy = 1;
-        add(firstNameField, gbc);
-
-        // Last name field
-        JLabel lastNameLabel = new JLabel("Nom :");
-        gbc.gridx = 0;
-        gbc.gridy = 2;
-        add(lastNameLabel, gbc);
-
-        lastNameField = new JTextField(20);
-        gbc.gridx = 1;
-        gbc.gridy = 2;
-        add(lastNameField, gbc);
-
-        submitButton = new JButton("Rechercher");
-        gbc.gridx = 0;
-        gbc.gridy = 3;
-        gbc.gridwidth = 2;
-        gbc.anchor = GridBagConstraints.CENTER;
-        add(submitButton, gbc);
-        submitButton.addActionListener(this);
-
-        String[] columnNames = {"Nom", "Prénom", "Points ELO", "Pro"};
-        tableModel = new NonEditableTableModel(columnNames, 0);
-        JTable table = new JTable(tableModel);
-        JScrollPane scrollPane = new JScrollPane(table);
-        gbc.gridx = 0;
-        gbc.gridy = 4;
-        gbc.gridwidth = 2;
-        gbc.fill = GridBagConstraints.BOTH;
-        gbc.weightx = 1.0;
-        gbc.weighty = 1.0;
-        add(scrollPane, gbc);
-    }
-
-    private void resetRows() {
-        tableModel.setRowCount(0);
-    }
-
-    private void submit() {
-        try {
-            String firstName = firstNameField.getText().trim();
-            String lastName = lastNameField.getText().trim();
-
-            if (firstName.isEmpty() || lastName.isEmpty()) {
-                mainWindow.displayError("Veuillez remplir les deux champs.");
-                return;
-            }
-
-            resetRows();
-            List<PlayerModel> players = playerController.getPlayersByFullName(firstName, lastName);
-
-            for (PlayerModel player : players) {
-                Object[] data = {
-                    player.getLastname(),
-                    player.getFirstname(),
-                    player.getEloPoints(),
-                    player.getIsPro() ? "Oui" : "Non"
-                };
-                tableModel.addRow(data);
-            }
-
-            if (players.isEmpty()) {
-                mainWindow.displayMessage("Aucun joueur trouvé avec ce nom et prénom.", "");
-            }
-
-        } catch (PlayerSearchException exception) {
-            mainWindow.displayError(exception.toString());
-        }
-    }
-
-    public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == submitButton) {
-            submit();
-        }
-    }
-}
-
-
-
-
-
-*/

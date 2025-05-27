@@ -1,23 +1,24 @@
 package main.viewPackage;
 
+import main.controllerPackage.PlayerController;
+import main.controllerPackage.LocalityController;
+import main.modelPackage.*;
+import main.modelPackage.NonEditableTableModel;
+import main.exceptionPackage.*;
+
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
-import main.controllerPackage.PlayerController;
-import main.controllerPackage.LocalityController;
-import main.exceptionPackage.*;
-import main.modelPackage.*;
-import main.modelPackage.NonEditableTableModel;
 
 public class ResearchPlayerRegion extends JPanel implements ActionListener {
     private MainWindow mainWindow;
-    private JComboBox<String> regionComboBox;
-    private JButton submitButton;
     private PlayerController playerController;
     private LocalityController localityController;
+    private JComboBox<String> regionComboBox;
+    private JButton submitButton;
     private DefaultTableModel tableModel;
 
     public ResearchPlayerRegion(MainWindow mainWindow) throws ConnectionDataAccessException {
@@ -40,7 +41,7 @@ public class ResearchPlayerRegion extends JPanel implements ActionListener {
         playerController = new PlayerController();
         localityController = new LocalityController();
 
-        // Region ComboBox
+        // Liste déroulante des régions
         JLabel regionLabel = new JLabel("Région :");
         gbc.gridx = 0;
         gbc.gridy = 1;
@@ -57,6 +58,7 @@ public class ResearchPlayerRegion extends JPanel implements ActionListener {
             mainWindow.displayError("Erreur lors du chargement des régions : " + e.getMessage());
         }
 
+        // Bouton de recherche
         submitButton = new JButton("Rechercher");
         gbc.gridx = 0;
         gbc.gridy = 2;
@@ -65,6 +67,7 @@ public class ResearchPlayerRegion extends JPanel implements ActionListener {
         add(submitButton, gbc);
         submitButton.addActionListener(this);
 
+        // Table des résultats
         String[] columnNames = {"Prénom", "Nom", "Points ELO", "Club", "Ville"};
         tableModel = new NonEditableTableModel(columnNames, 0);
         JTable table = new JTable(tableModel);

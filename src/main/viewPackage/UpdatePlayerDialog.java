@@ -2,9 +2,9 @@ package main.viewPackage;
 
 import main.controllerPackage.PlayerController;
 import main.controllerPackage.LocalityController;
-import main.exceptionPackage.*;
 import main.modelPackage.PlayerModel;
 import main.modelPackage.LocalityModel;
+import main.exceptionPackage.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -15,6 +15,10 @@ import java.util.Calendar;
 import java.util.List;
 
 public class UpdatePlayerDialog extends JDialog implements ActionListener {
+    private CrudPlayer parentPanel;
+    private PlayerController playerController;
+    private LocalityController localityController;
+    private PlayerModel currentPlayer;
     private JTextField lastNameField;
     private JTextField firstNameField;
     private JTextField emailField;
@@ -30,10 +34,6 @@ public class UpdatePlayerDialog extends JDialog implements ActionListener {
     private JComboBox<LocalityModel> localityComboBox;
     private JButton submitButton;
     private JButton cancelButton;
-    private PlayerController playerController;
-    private LocalityController localityController;
-    private CrudPlayer parentPanel;
-    private PlayerModel currentPlayer;
 
     public UpdatePlayerDialog(CrudPlayer parent, int playerId) throws ConnectionDataAccessException {
         super((Frame) SwingUtilities.getWindowAncestor(parent), "Modifier le joueur", true);
@@ -62,7 +62,7 @@ public class UpdatePlayerDialog extends JDialog implements ActionListener {
     }
 
     private void createContent() {
-        // Create form panel
+        // Panel du formulaire
         JPanel formPanel = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(5, 5, 5, 5);
@@ -198,7 +198,7 @@ public class UpdatePlayerDialog extends JDialog implements ActionListener {
 
         add(formPanel, BorderLayout.CENTER);
 
-        // Buttons panel
+        // Panel des boutons
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         submitButton = new JButton("Modifier");
         cancelButton = new JButton("Annuler");
@@ -213,17 +213,17 @@ public class UpdatePlayerDialog extends JDialog implements ActionListener {
     public void actionPerformed(ActionEvent actionEvent) {
         if (actionEvent.getSource() == submitButton) {
             try {
-                // Update player
+                // Mise à jour du joueur
                 currentPlayer.setLastname(lastNameField.getText());
                 currentPlayer.setFirstname(firstNameField.getText());
                 currentPlayer.setEmail(emailField.getText());
                 currentPlayer.setPhoneNumber(phoneField.getText());
                 currentPlayer.setInstagramProfile(instagramField.getText());
                 
-                // Create date from spinners
+                // Création de la date à partir des spinners
                 Calendar cal = Calendar.getInstance();
                 cal.set(Calendar.YEAR, (Integer) yearSpinner.getValue());
-                cal.set(Calendar.MONTH, (Integer) monthSpinner.getValue() - 1); // Month is 0-based
+                cal.set(Calendar.MONTH, (Integer) monthSpinner.getValue() - 1);
                 cal.set(Calendar.DAY_OF_MONTH, (Integer) daySpinner.getValue());
                 currentPlayer.setBirthdayDate(new Date(cal.getTimeInMillis()));
                 
@@ -236,13 +236,13 @@ public class UpdatePlayerDialog extends JDialog implements ActionListener {
                     currentPlayer.setLocalityId(selectedLocality.getLocalityId());
                 }
 
-                // Save player
+                // Sauvegarde du joueur
                 playerController.updatePlayer(currentPlayer);
                 
-                // Refresh parent panel
+                // Rafraîchissement du panel parent
                 parentPanel.loadPlayers();
                 
-                // Close dialog
+                // Fermeture de la boîte de dialogue
                 dispose();
 
             } catch (PlayerUpdateException e) {
@@ -261,7 +261,7 @@ public class UpdatePlayerDialog extends JDialog implements ActionListener {
         }
     }
 
-    // Custom renderer for LocalityModel in ComboBox
+    // Rendu personnalisé pour LocalityModel dans ComboBox
     private class LocalityListCellRenderer extends DefaultListCellRenderer {
         @Override
         public Component getListCellRendererComponent(JList<?> list, Object value, int index,

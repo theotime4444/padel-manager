@@ -4,13 +4,11 @@ import javax.swing.*;
 import java.awt.*;
 
 public class ThreadBallAnimation extends JPanel {
+    private ThreadBall threadBall;
     private int ballX = 0;
     private int ballY = 100;
     private int ballDiameter = 30;
-
     private boolean movingRight = true;
-
-    private ThreadBall threadBall;
 
     public ThreadBallAnimation() {
         setPreferredSize(new Dimension(600, 300));

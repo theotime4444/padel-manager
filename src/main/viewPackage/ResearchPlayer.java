@@ -1,28 +1,25 @@
 package main.viewPackage;
 
+import main.controllerPackage.PlayerController;
+import main.modelPackage.PlayerModel;
+import main.modelPackage.NonEditableTableModel;
+import main.modelPackage.ClubModel;
+import main.modelPackage.LocalityModel;
+import main.exceptionPackage.*;
+
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
-import main.controllerPackage.PlayerController;
-import main.exceptionPackage.ConnectionDataAccessException;
-import main.exceptionPackage.PlayerSearchException;
-import main.modelPackage.PlayerModel;
-import main.modelPackage.NonEditableTableModel;
-import main.modelPackage.ClubModel;
-import main.modelPackage.LocalityModel;
-import main.exceptionPackage.ClubSearchException;
-import main.exceptionPackage.ValidationException;
-import main.exceptionPackage.LocalitySearchException;
 
 public class ResearchPlayer extends JPanel implements ActionListener {
     private MainWindow mainWindow;
+    private PlayerController playerController;
     private JTextField firstNameField;
     private JTextField lastNameField;
     private JButton submitButton;
-    private PlayerController playerController;
     private DefaultTableModel tableModel;
 
     public ResearchPlayer(MainWindow mainWindow) throws ConnectionDataAccessException {
@@ -44,7 +41,7 @@ public class ResearchPlayer extends JPanel implements ActionListener {
 
         playerController = new PlayerController();
 
-        // Last name field
+        // Champ nom
         JLabel lastNameLabel = new JLabel("Nom :");
         gbc.gridx = 0;
         gbc.gridy = 1;
@@ -55,7 +52,7 @@ public class ResearchPlayer extends JPanel implements ActionListener {
         gbc.gridy = 1;
         add(lastNameField, gbc);
 
-        // First name field
+        // Champ prénom
         JLabel firstNameLabel = new JLabel("Prénom :");
         gbc.gridx = 0;
         gbc.gridy = 2;
@@ -67,7 +64,7 @@ public class ResearchPlayer extends JPanel implements ActionListener {
         gbc.gridy = 2;
         add(firstNameField, gbc);
 
-
+        // Bouton de recherche
         submitButton = new JButton("Rechercher");
         gbc.gridx = 0;
         gbc.gridy = 3;
@@ -76,6 +73,7 @@ public class ResearchPlayer extends JPanel implements ActionListener {
         add(submitButton, gbc);
         submitButton.addActionListener(this);
 
+        // Table des résultats
         String[] columnNames = {"Nom", "Prénom", "Points ELO", "Pro", "Club", "Ville", "Région", "Pays"};
         tableModel = new NonEditableTableModel(columnNames, 0);
         JTable table = new JTable(tableModel);

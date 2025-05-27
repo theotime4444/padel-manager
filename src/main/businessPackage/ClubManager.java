@@ -49,13 +49,13 @@ public class ClubManager {
     private void validateClub(ClubModel club) throws ValidationException {
         if (club == null) throw new ValidationException("null", "Le club est nul");
 
-        ValidationUtility.checkRequiredString(club.getName(), "Le nom", 1, 50);
-        ValidationUtility.checkRequiredString(club.getStreetAddress(), "La rue", 1, 50);
+        ValidationUtility.checkRequiredString(club.getName(), "Le nom", 1, 45);
+        ValidationUtility.checkRequiredString(club.getStreetAddress(), "La rue", 1, 45);
         ValidationUtility.checkValidId(club.getLocalityId(), "La localité");
-        ValidationUtility.checkRequiredString(club.getPhoneNumber(), "Le numéro de téléphone", 1, 50);
+        ValidationUtility.checkRequiredString(club.getPhoneNumber(), "Le numéro de téléphone", 1, 20);
         ValidationUtility.checkValidDate((Date) club.getCreationDate(), "La date de création");
 
-        ValidationUtility.checkOptionalString(club.getWebsite(), "Le site internet", 1, 50);
-        ValidationUtility.checkOptionalString(club.getInstagramProfile(), "Le profil Instagram", 1, 255);
+        ValidationUtility.checkOptionalString(club.getWebsite(), "Le site internet", 1, 45);
+        ValidationUtility.checkOptionalString(club.getInstagramProfile(), "Le profil Instagram", 1, 50);
     }
 }

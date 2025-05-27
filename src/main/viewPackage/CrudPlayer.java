@@ -1,25 +1,26 @@
 package main.viewPackage;
 
+import main.controllerPackage.PlayerController;
+import main.modelPackage.PlayerModel;
+import main.modelPackage.NonEditableTableModel;
+import main.exceptionPackage.*;
+
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
-import main.controllerPackage.PlayerController;
-import main.exceptionPackage.*;
-import main.modelPackage.PlayerModel;
-import main.modelPackage.NonEditableTableModel;
 
 public class CrudPlayer extends JPanel implements ActionListener {
     private MainWindow mainWindow;
+    private PlayerController playerController;
     private JTable playerTable;
     private DefaultTableModel tableModel;
     private JButton createButton;
     private JButton readButton;
     private JButton updateButton;
     private JButton deleteButton;
-    private PlayerController playerController;
 
     public CrudPlayer(MainWindow mainWindow) throws ConnectionDataAccessException {
         this.mainWindow = mainWindow;

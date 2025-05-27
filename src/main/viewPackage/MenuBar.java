@@ -10,8 +10,8 @@ public class MenuBar implements ActionListener {
     private JMenu menuMain;
     private JMenu menuPlayers;
     private JMenu menuSearch;
-    private JMenu menuThread;
     private JMenu menuBusiness;
+    private JMenu menuThread;
     private JMenuItem home;
     private JMenuItem exit;
     private JMenuItem crudPlayer;
@@ -19,9 +19,9 @@ public class MenuBar implements ActionListener {
     private JMenuItem researchPlayer;
     private JMenuItem researchTournamentMatches;
     private JMenuItem researchPlayerRegion;
-    private JMenuItem threadBallAnimation;
     private JMenuItem businessStatPlayer;
     private JMenuItem businessFindPlayer;
+    private JMenuItem threadBallAnimation;
 
     public MenuBar(MainWindow mainWindow) {
         this.mainWindow = mainWindow;
@@ -39,7 +39,7 @@ public class MenuBar implements ActionListener {
         menuMain.addSeparator();
         menuMain.add(exit);
 
-        // CRUD
+        // Menu CRUD
         menuPlayers = new JMenu("CRUD");
 
         crudPlayer = new JMenuItem("Player");
@@ -52,7 +52,7 @@ public class MenuBar implements ActionListener {
         menuPlayers.addSeparator();
         menuPlayers.add(crudClub);
 
-        // Recherche
+        // Menu recherche
         menuSearch = new JMenu("Recherche");
 
         researchPlayer = new JMenuItem("Afficher information de joueurs");
@@ -70,7 +70,7 @@ public class MenuBar implements ActionListener {
         menuSearch.addSeparator();
         menuSearch.add(researchPlayerRegion);
 
-        // Business
+        // Menu métier
         menuBusiness = new JMenu("Business");
 
         businessStatPlayer = new JMenuItem("Statistiques du joueur");
@@ -83,7 +83,7 @@ public class MenuBar implements ActionListener {
         menuBusiness.addSeparator();
         menuBusiness.add(businessFindPlayer);
 
-        // Thread
+        // Menu thread
         menuThread = new JMenu("Thread");
 
         threadBallAnimation = new JMenuItem("Animation de balle");
@@ -91,7 +91,7 @@ public class MenuBar implements ActionListener {
 
         menuThread.add(threadBallAnimation);
 
-        // Bar
+        // Barre de menu
         menuBar = new JMenuBar();
 
         menuBar.add(menuMain);
@@ -99,8 +99,7 @@ public class MenuBar implements ActionListener {
         menuBar.add(menuSearch);
         menuBar.add(menuBusiness);
         menuBar.add(menuThread);
-        // Ajout de la barre de menu à la fenêtre principale
-        this.mainWindow.setJMenuBar(menuBar);
+        mainWindow.setJMenuBar(menuBar);
     }
 
     @Override

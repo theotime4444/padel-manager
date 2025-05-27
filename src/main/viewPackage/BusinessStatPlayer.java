@@ -1,9 +1,9 @@
 package main.viewPackage;
 
 import main.controllerPackage.PlayerController;
-import main.exceptionPackage.*;
 import main.modelPackage.PlayerModel;
-import main.viewPackage.PlayerStatsDisplayData;
+import main.exceptionPackage.*;
+import main.utilPackage.ValidationUtility;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;

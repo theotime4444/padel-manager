@@ -2,9 +2,9 @@ package main.viewPackage;
 
 import main.controllerPackage.PlayerController;
 import main.controllerPackage.LocalityController;
-import main.exceptionPackage.*;
 import main.modelPackage.PlayerModel;
 import main.modelPackage.LocalityModel;
+import main.exceptionPackage.*;
 
 import javax.swing.*;
 import java.awt.*;
